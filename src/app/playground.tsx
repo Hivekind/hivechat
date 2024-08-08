@@ -365,9 +365,9 @@ function Discover() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="mr-2 h-4 w-4"
           >
             <circle cx="12" cy="12" r="10"></circle>
@@ -381,9 +381,9 @@ function Discover() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="mr-2 h-4 w-4"
           >
             <rect width="7" height="7" x="3" y="3" rx="1"></rect>
@@ -399,9 +399,9 @@ function Discover() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="mr-2 h-4 w-4"
           >
             <path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"></path>
@@ -428,8 +428,6 @@ function Playlists() {
         className="relative overflow-hidden h-[300px] px-1"
         style={{
           position: "relative",
-          "--radix-scroll-area-corner-width": "0px",
-          "--radix-scroll-area-corner-height": "0px",
         }}
       >
         <div
@@ -445,9 +443,9 @@ function Playlists() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="mr-2 h-4 w-4"
                 >
                   <path d="M21 15V6"></path>
@@ -464,9 +462,9 @@ function Playlists() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="mr-2 h-4 w-4"
                 >
                   <path d="M21 15V6"></path>
@@ -483,9 +481,9 @@ function Playlists() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="mr-2 h-4 w-4"
                 >
                   <path d="M21 15V6"></path>
@@ -502,9 +500,9 @@ function Playlists() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="mr-2 h-4 w-4"
                 >
                   <path d="M21 15V6"></path>
@@ -521,9 +519,9 @@ function Playlists() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="mr-2 h-4 w-4"
                 >
                   <path d="M21 15V6"></path>
@@ -540,9 +538,9 @@ function Playlists() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="mr-2 h-4 w-4"
                 >
                   <path d="M21 15V6"></path>
@@ -559,9 +557,9 @@ function Playlists() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="mr-2 h-4 w-4"
                 >
                   <path d="M21 15V6"></path>
@@ -578,9 +576,9 @@ function Playlists() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="mr-2 h-4 w-4"
                 >
                   <path d="M21 15V6"></path>
@@ -597,9 +595,9 @@ function Playlists() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="mr-2 h-4 w-4"
                 >
                   <path d="M21 15V6"></path>
@@ -616,9 +614,9 @@ function Playlists() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="mr-2 h-4 w-4"
                 >
                   <path d="M21 15V6"></path>
@@ -635,9 +633,9 @@ function Playlists() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="mr-2 h-4 w-4"
                 >
                   <path d="M21 15V6"></path>
@@ -654,9 +652,9 @@ function Playlists() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="mr-2 h-4 w-4"
                 >
                   <path d="M21 15V6"></path>
@@ -689,9 +687,9 @@ function Library() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="mr-2 h-4 w-4"
           >
             <path d="M21 15V6"></path>
@@ -708,9 +706,9 @@ function Library() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="mr-2 h-4 w-4"
           >
             <circle cx="8" cy="18" r="4"></circle>
@@ -724,9 +722,9 @@ function Library() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="mr-2 h-4 w-4"
           >
             <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
@@ -740,9 +738,9 @@ function Library() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="mr-2 h-4 w-4"
           >
             <path d="m12 8-9.04 9.06a2.82 2.82 0 1 0 3.98 3.98L16 12"></path>
@@ -756,9 +754,9 @@ function Library() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="mr-2 h-4 w-4"
           >
             <path d="m16 6 4 14"></path>
