@@ -26,20 +26,22 @@ import { TopPSelector } from "@/components/top-p-selector";
 import { models, types } from "@/data/models";
 import { presets } from "@/data/presets";
 import { RecoilRoot } from "recoil";
+import MessageForm from "@/components/message-form";
+import ChatBox from "@/components/chat-box";
 
 export default function Playground() {
   return (
     <RecoilRoot>
       <div className="md:hidden">
         <Image
-          src="/examples/playground-light.png"
+          src="https://ui.shadcn.com/examples/playground-light.png"
           width={1280}
           height={916}
           alt="Playground"
           className="block dark:hidden"
         />
         <Image
-          src="/examples/playground-dark.png"
+          src="https://ui.shadcn.com/examples/playground-dark.png"
           width={1280}
           height={916}
           alt="Playground"
@@ -249,17 +251,8 @@ export default function Playground() {
               <div className="md:order-1">
                 <TabsContent value="complete" className="mt-0 border-0 p-0">
                   <div className="flex h-full flex-col space-y-4">
-                    <Textarea
-                      placeholder="Write a tagline for an ice cream shop"
-                      className="min-h-[400px] flex-1 p-4 md:min-h-[700px] lg:min-h-[700px]"
-                    />
-                    <div className="flex items-center space-x-2">
-                      <Button>Submit</Button>
-                      <Button variant="secondary">
-                        <span className="sr-only">Show history</span>
-                        <CounterClockwiseClockIcon className="h-4 w-4" />
-                      </Button>
-                    </div>
+                    <ChatBox />
+                    <MessageForm />
                   </div>
                 </TabsContent>
                 <TabsContent value="insert" className="mt-0 border-0 p-0">
