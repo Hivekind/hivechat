@@ -65,411 +65,9 @@ export default function Playground() {
         <div className="grid grid-cols-5">
           <div className="pb-12 hidden lg:block">
             <div className="space-y-4 py-4">
-              <div className="px-3 py-2">
-                <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-                  Discover
-                </h2>
-                <div className="space-y-1">
-                  <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 h-9 px-4 py-2 w-full justify-start">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      className="mr-2 h-4 w-4"
-                    >
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <polygon points="10 8 16 12 10 16 10 8"></polygon>
-                    </svg>
-                    Listen Now
-                  </button>
-                  <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      className="mr-2 h-4 w-4"
-                    >
-                      <rect width="7" height="7" x="3" y="3" rx="1"></rect>
-                      <rect width="7" height="7" x="14" y="3" rx="1"></rect>
-                      <rect width="7" height="7" x="14" y="14" rx="1"></rect>
-                      <rect width="7" height="7" x="3" y="14" rx="1"></rect>
-                    </svg>
-                    Browse
-                  </button>
-                  <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      className="mr-2 h-4 w-4"
-                    >
-                      <path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"></path>
-                      <path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"></path>
-                      <circle cx="12" cy="12" r="2"></circle>
-                      <path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"></path>
-                      <path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"></path>
-                    </svg>
-                    Radio
-                  </button>
-                </div>
-              </div>
-              <div className="px-3 py-2">
-                <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-                  Library
-                </h2>
-                <div className="space-y-1">
-                  <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      className="mr-2 h-4 w-4"
-                    >
-                      <path d="M21 15V6"></path>
-                      <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
-                      <path d="M12 12H3"></path>
-                      <path d="M16 6H3"></path>
-                      <path d="M12 18H3"></path>
-                    </svg>
-                    Playlists
-                  </button>
-                  <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      className="mr-2 h-4 w-4"
-                    >
-                      <circle cx="8" cy="18" r="4"></circle>
-                      <path d="M12 18V2l7 4"></path>
-                    </svg>
-                    Songs
-                  </button>
-                  <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      className="mr-2 h-4 w-4"
-                    >
-                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                    Made for You
-                  </button>
-                  <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      className="mr-2 h-4 w-4"
-                    >
-                      <path d="m12 8-9.04 9.06a2.82 2.82 0 1 0 3.98 3.98L16 12"></path>
-                      <circle cx="17" cy="7" r="5"></circle>
-                    </svg>
-                    Artists
-                  </button>
-                  <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      className="mr-2 h-4 w-4"
-                    >
-                      <path d="m16 6 4 14"></path>
-                      <path d="M12 6v14"></path>
-                      <path d="M8 8v12"></path>
-                      <path d="M4 4v16"></path>
-                    </svg>
-                    Albums
-                  </button>
-                </div>
-              </div>
-              <div className="py-2">
-                <h2 className="relative px-7 text-lg font-semibold tracking-tight">
-                  Playlists
-                </h2>
-                <div
-                  dir="ltr"
-                  className="relative overflow-hidden h-[300px] px-1"
-                  style={{
-                    position: "relative",
-                    "--radix-scroll-area-corner-width": "0px",
-                    "--radix-scroll-area-corner-height": "0px",
-                  }}
-                >
-                  <div
-                    data-radix-scroll-area-viewport=""
-                    className="h-full w-full rounded-[inherit]"
-                    style={{ overflow: "hidden scroll" }}
-                  >
-                    <div style={{ minWidth: "100%", display: "table" }}>
-                      <div className="space-y-1 p-2">
-                        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            className="mr-2 h-4 w-4"
-                          >
-                            <path d="M21 15V6"></path>
-                            <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
-                            <path d="M12 12H3"></path>
-                            <path d="M16 6H3"></path>
-                            <path d="M12 18H3"></path>
-                          </svg>
-                          Recently Added
-                        </button>
-                        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            className="mr-2 h-4 w-4"
-                          >
-                            <path d="M21 15V6"></path>
-                            <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
-                            <path d="M12 12H3"></path>
-                            <path d="M16 6H3"></path>
-                            <path d="M12 18H3"></path>
-                          </svg>
-                          Recently Played
-                        </button>
-                        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            className="mr-2 h-4 w-4"
-                          >
-                            <path d="M21 15V6"></path>
-                            <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
-                            <path d="M12 12H3"></path>
-                            <path d="M16 6H3"></path>
-                            <path d="M12 18H3"></path>
-                          </svg>
-                          Top Songs
-                        </button>
-                        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            className="mr-2 h-4 w-4"
-                          >
-                            <path d="M21 15V6"></path>
-                            <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
-                            <path d="M12 12H3"></path>
-                            <path d="M16 6H3"></path>
-                            <path d="M12 18H3"></path>
-                          </svg>
-                          Top Albums
-                        </button>
-                        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            className="mr-2 h-4 w-4"
-                          >
-                            <path d="M21 15V6"></path>
-                            <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
-                            <path d="M12 12H3"></path>
-                            <path d="M16 6H3"></path>
-                            <path d="M12 18H3"></path>
-                          </svg>
-                          Top Artists
-                        </button>
-                        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            className="mr-2 h-4 w-4"
-                          >
-                            <path d="M21 15V6"></path>
-                            <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
-                            <path d="M12 12H3"></path>
-                            <path d="M16 6H3"></path>
-                            <path d="M12 18H3"></path>
-                          </svg>
-                          Logic Discography
-                        </button>
-                        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            className="mr-2 h-4 w-4"
-                          >
-                            <path d="M21 15V6"></path>
-                            <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
-                            <path d="M12 12H3"></path>
-                            <path d="M16 6H3"></path>
-                            <path d="M12 18H3"></path>
-                          </svg>
-                          Bedtime Beats
-                        </button>
-                        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            className="mr-2 h-4 w-4"
-                          >
-                            <path d="M21 15V6"></path>
-                            <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
-                            <path d="M12 12H3"></path>
-                            <path d="M16 6H3"></path>
-                            <path d="M12 18H3"></path>
-                          </svg>
-                          Feeling Happy
-                        </button>
-                        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            className="mr-2 h-4 w-4"
-                          >
-                            <path d="M21 15V6"></path>
-                            <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
-                            <path d="M12 12H3"></path>
-                            <path d="M16 6H3"></path>
-                            <path d="M12 18H3"></path>
-                          </svg>
-                          I miss Y2K Pop
-                        </button>
-                        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            className="mr-2 h-4 w-4"
-                          >
-                            <path d="M21 15V6"></path>
-                            <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
-                            <path d="M12 12H3"></path>
-                            <path d="M16 6H3"></path>
-                            <path d="M12 18H3"></path>
-                          </svg>
-                          Runtober
-                        </button>
-                        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            className="mr-2 h-4 w-4"
-                          >
-                            <path d="M21 15V6"></path>
-                            <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
-                            <path d="M12 12H3"></path>
-                            <path d="M16 6H3"></path>
-                            <path d="M12 18H3"></path>
-                          </svg>
-                          Mellow Days
-                        </button>
-                        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            className="mr-2 h-4 w-4"
-                          >
-                            <path d="M21 15V6"></path>
-                            <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
-                            <path d="M12 12H3"></path>
-                            <path d="M16 6H3"></path>
-                            <path d="M12 18H3"></path>
-                          </svg>
-                          Eminem Essentials
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Discover />
+              <Library />
+              <Playlists />
             </div>
           </div>
           <Tabs defaultValue="complete" className="flex-1 col-span-4">
@@ -724,5 +322,425 @@ export default function Playground() {
         </div>
       </div>
     </RecoilRoot>
+  );
+}
+function Discover() {
+  return (
+    <div className="px-3 py-2">
+      <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+        Discover
+      </h2>
+      <div className="space-y-1">
+        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 h-9 px-4 py-2 w-full justify-start">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="mr-2 h-4 w-4"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="10 8 16 12 10 16 10 8"></polygon>
+          </svg>
+          Listen Now
+        </button>
+        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="mr-2 h-4 w-4"
+          >
+            <rect width="7" height="7" x="3" y="3" rx="1"></rect>
+            <rect width="7" height="7" x="14" y="3" rx="1"></rect>
+            <rect width="7" height="7" x="14" y="14" rx="1"></rect>
+            <rect width="7" height="7" x="3" y="14" rx="1"></rect>
+          </svg>
+          Browse
+        </button>
+        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="mr-2 h-4 w-4"
+          >
+            <path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"></path>
+            <path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"></path>
+            <circle cx="12" cy="12" r="2"></circle>
+            <path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"></path>
+            <path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"></path>
+          </svg>
+          Radio
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Playlists() {
+  return (
+    <div className="py-2">
+      <h2 className="relative px-7 text-lg font-semibold tracking-tight">
+        Playlists
+      </h2>
+      <div
+        dir="ltr"
+        className="relative overflow-hidden h-[300px] px-1"
+        style={{
+          position: "relative",
+          "--radix-scroll-area-corner-width": "0px",
+          "--radix-scroll-area-corner-height": "0px",
+        }}
+      >
+        <div
+          data-radix-scroll-area-viewport=""
+          className="h-full w-full rounded-[inherit]"
+          style={{ overflow: "hidden scroll" }}
+        >
+          <div style={{ minWidth: "100%", display: "table" }}>
+            <div className="space-y-1 p-2">
+              <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="mr-2 h-4 w-4"
+                >
+                  <path d="M21 15V6"></path>
+                  <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+                  <path d="M12 12H3"></path>
+                  <path d="M16 6H3"></path>
+                  <path d="M12 18H3"></path>
+                </svg>
+                Recently Added
+              </button>
+              <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="mr-2 h-4 w-4"
+                >
+                  <path d="M21 15V6"></path>
+                  <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+                  <path d="M12 12H3"></path>
+                  <path d="M16 6H3"></path>
+                  <path d="M12 18H3"></path>
+                </svg>
+                Recently Played
+              </button>
+              <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="mr-2 h-4 w-4"
+                >
+                  <path d="M21 15V6"></path>
+                  <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+                  <path d="M12 12H3"></path>
+                  <path d="M16 6H3"></path>
+                  <path d="M12 18H3"></path>
+                </svg>
+                Top Songs
+              </button>
+              <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="mr-2 h-4 w-4"
+                >
+                  <path d="M21 15V6"></path>
+                  <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+                  <path d="M12 12H3"></path>
+                  <path d="M16 6H3"></path>
+                  <path d="M12 18H3"></path>
+                </svg>
+                Top Albums
+              </button>
+              <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="mr-2 h-4 w-4"
+                >
+                  <path d="M21 15V6"></path>
+                  <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+                  <path d="M12 12H3"></path>
+                  <path d="M16 6H3"></path>
+                  <path d="M12 18H3"></path>
+                </svg>
+                Top Artists
+              </button>
+              <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="mr-2 h-4 w-4"
+                >
+                  <path d="M21 15V6"></path>
+                  <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+                  <path d="M12 12H3"></path>
+                  <path d="M16 6H3"></path>
+                  <path d="M12 18H3"></path>
+                </svg>
+                Logic Discography
+              </button>
+              <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="mr-2 h-4 w-4"
+                >
+                  <path d="M21 15V6"></path>
+                  <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+                  <path d="M12 12H3"></path>
+                  <path d="M16 6H3"></path>
+                  <path d="M12 18H3"></path>
+                </svg>
+                Bedtime Beats
+              </button>
+              <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="mr-2 h-4 w-4"
+                >
+                  <path d="M21 15V6"></path>
+                  <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+                  <path d="M12 12H3"></path>
+                  <path d="M16 6H3"></path>
+                  <path d="M12 18H3"></path>
+                </svg>
+                Feeling Happy
+              </button>
+              <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="mr-2 h-4 w-4"
+                >
+                  <path d="M21 15V6"></path>
+                  <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+                  <path d="M12 12H3"></path>
+                  <path d="M16 6H3"></path>
+                  <path d="M12 18H3"></path>
+                </svg>
+                I miss Y2K Pop
+              </button>
+              <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="mr-2 h-4 w-4"
+                >
+                  <path d="M21 15V6"></path>
+                  <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+                  <path d="M12 12H3"></path>
+                  <path d="M16 6H3"></path>
+                  <path d="M12 18H3"></path>
+                </svg>
+                Runtober
+              </button>
+              <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="mr-2 h-4 w-4"
+                >
+                  <path d="M21 15V6"></path>
+                  <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+                  <path d="M12 12H3"></path>
+                  <path d="M16 6H3"></path>
+                  <path d="M12 18H3"></path>
+                </svg>
+                Mellow Days
+              </button>
+              <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start font-normal">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="mr-2 h-4 w-4"
+                >
+                  <path d="M21 15V6"></path>
+                  <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+                  <path d="M12 12H3"></path>
+                  <path d="M16 6H3"></path>
+                  <path d="M12 18H3"></path>
+                </svg>
+                Eminem Essentials
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Library() {
+  return (
+    <div className="px-3 py-2">
+      <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+        Library
+      </h2>
+
+      <div className="space-y-1">
+        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="mr-2 h-4 w-4"
+          >
+            <path d="M21 15V6"></path>
+            <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+            <path d="M12 12H3"></path>
+            <path d="M16 6H3"></path>
+            <path d="M12 18H3"></path>
+          </svg>
+          Playlists
+        </button>
+        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="mr-2 h-4 w-4"
+          >
+            <circle cx="8" cy="18" r="4"></circle>
+            <path d="M12 18V2l7 4"></path>
+          </svg>
+          Songs
+        </button>
+        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="mr-2 h-4 w-4"
+          >
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          Made for You
+        </button>
+        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="mr-2 h-4 w-4"
+          >
+            <path d="m12 8-9.04 9.06a2.82 2.82 0 1 0 3.98 3.98L16 12"></path>
+            <circle cx="17" cy="7" r="5"></circle>
+          </svg>
+          Artists
+        </button>
+        <button className="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full justify-start">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="mr-2 h-4 w-4"
+          >
+            <path d="m16 6 4 14"></path>
+            <path d="M12 6v14"></path>
+            <path d="M8 8v12"></path>
+            <path d="M4 4v16"></path>
+          </svg>
+          Albums
+        </button>
+      </div>
+    </div>
   );
 }
