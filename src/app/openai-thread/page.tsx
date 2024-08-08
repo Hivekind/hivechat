@@ -1,12 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { chatCompletion } from "@/lib/openai";
+import { initiateChat, continueChat } from "@/lib/openai";
 import type { Message } from "@/lib/openai";
 
 export default function ChatBot() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState("");
+
+  const [assistantId, setAssistantId] = useState("");
+  const [threadId, setThreadId] = useState("");
 
   // get chat history from session storage
   useEffect(() => {
@@ -18,13 +21,34 @@ export default function ChatBot() {
         { role: "assistant", content: "Hello, how may I help you?" },
       ]);
     }
+
+    const storedAssistantId = sessionStorage.getItem("assistantId");
+    if (storedAssistantId) {
+      setAssistantId(JSON.parse(storedAssistantId));
+    } 
+
+    const storedThreadId = sessionStorage.getItem("threadId");
+    if (storedThreadId) {
+      setThreadId(JSON.parse(storedThreadId));
+    } 
   }, []);
+
 
 
   // save chat history to session storage
   useEffect(() => {
     sessionStorage.setItem("chatHistory", JSON.stringify(messages));
   }, [messages]);
+
+  useEffect(() => {
+    sessionStorage.setItem("assistantId", JSON.stringify(assistantId));
+  }, [assistantId]);
+
+  useEffect(() => {
+    sessionStorage.setItem("threadId", JSON.stringify(threadId));
+  }, [threadId]);
+
+
 
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -34,16 +58,38 @@ export default function ChatBot() {
       return;
     }
 
-    const msgs = [...messages];
-    msgs.push({ role: "user", content: userInput });
-
     setMessages((prevMessages) => [
       ...prevMessages,
       { role: "user", content: userInput },
     ]);
     setUserInput("");
 
-    const response = (await chatCompletion(msgs)) || "Response error ....";
+    if (!threadId) {
+      console.log("initiating chat ...");
+
+      const { assistant_id, thread_id, response } = await initiateChat(
+        userInput
+      );
+
+      setAssistantId(assistant_id);
+      setThreadId(thread_id);
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { role: "assistant", content: response },
+      ]);
+
+      return;
+    }
+
+    console.log("Continue chat ...");
+
+    const { message_id, response } = await continueChat({
+      threadId,
+      assistantId,
+      prompt: userInput
+    });
+
     setMessages((prevMessages) => [
       ...prevMessages,
       { role: "assistant", content: response },
