@@ -28,6 +28,14 @@ import { presets } from "@/data/presets";
 import { RecoilRoot } from "recoil";
 import MessageForm from "@/components/message-form";
 import ChatBox from "@/components/chat-box";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import ApiKeyDialog from "@/components/api-key-dialog";
 
 export default function Playground() {
   return (
@@ -67,7 +75,7 @@ export default function Playground() {
             <div className="space-y-4 py-4">
               <Discover />
               <Library />
-              <Playlists />
+              <ApiKeysCta />
             </div>
           </div>
           <Tabs defaultValue="complete" className="flex-1 col-span-4">
@@ -324,6 +332,26 @@ export default function Playground() {
     </RecoilRoot>
   );
 }
+
+function ApiKeysCta() {
+  return (
+    <div className="mt-auto p-4">
+      <Card x-chunk="dashboard-02-chunk-0">
+        <CardHeader className="p-2 pt-0 md:p-4">
+          <CardTitle>Add Your API Keys</CardTitle>
+          <CardDescription>
+            Your API keys are stored locally on your browser and never sent
+            anywhere else.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+          <ApiKeyDialog />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 function Discover() {
   return (
     <div className="px-3 py-2">
