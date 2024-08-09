@@ -54,9 +54,14 @@ export function MessageBubble({
             <AvatarFallback>AI</AvatarFallback>
           </Avatar>
 
-          <div>
+          <div className="max-w-4xl">
             <p>{message}</p>
-            <p suppressHydrationWarning>{timestamp.toString()}</p>
+            <p
+              suppressHydrationWarning
+              className="text-xs text-slate-500 text-end"
+            >
+              {timestamp.toString()}
+            </p>
           </div>
         </div>
       </div>
