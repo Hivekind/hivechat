@@ -3,14 +3,15 @@
 import { messageState } from "@/atoms/messages";
 import { useRecoilValue } from "recoil";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { MessageData, MessageType } from "@/types";
 
 export default function ChatBox() {
-  const messages = useRecoilValue(messageState);
+  const messages: MessageData[] = useRecoilValue(messageState);
 
   return (
     <main style={{ flex: 1, overflowY: "auto", padding: "10px" }}>
       {messages.map((message, index) => {
-        if (message.type === "send") {
+        if (message.type === MessageType.Send) {
           return (
             <SendBubble
               key={index}
@@ -19,7 +20,7 @@ export default function ChatBox() {
               message={message.message}
             />
           );
-        } else if (message.type === "recv") {
+        } else if (message.type === MessageType.Recv) {
           return (
             <RecvBubble
               key={index}
@@ -34,21 +35,14 @@ export default function ChatBox() {
   );
 }
 
-type MessageProps = {
-  name: string;
-  timestamp?: Date;
-  message: string;
-  type: string;
-};
-
 export function MessageBubble({
   name,
   timestamp = new Date(),
   message,
   type,
-}: MessageProps) {
+}: MessageData) {
   const className =
-    type === "send" ? "ml-auto bg-primary text-primary-foreground" : "bg-muted";
+    type === MessageType.Send ? "ml-auto bg-primary text-primary-foreground" : "bg-muted";
   return (
     <div className="mt-4">
       <div
@@ -74,14 +68,14 @@ export function RecvBubble({
   name,
   timestamp,
   message,
-}: Omit<MessageProps, "type">) {
-  return MessageBubble({ name, timestamp, message, type: "recv" });
+}: Omit<MessageData, "type">) {
+  return MessageBubble({ name, timestamp, message, type: MessageType.Recv });
 }
 
 export function SendBubble({
   name,
   timestamp,
   message,
-}: Omit<MessageProps, "type">) {
-  return MessageBubble({ name, timestamp, message, type: "send" });
+}: Omit<MessageData, "type">) {
+  return MessageBubble({ name, timestamp, message, type: MessageType.Send });
 }
