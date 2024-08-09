@@ -35,18 +35,11 @@ export default function MessageForm() {
     event.preventDefault();
     if (!input || input === "") return;
 
-    // SY TODO: temporary workaround for state not immediately reflected after set
-    const msgs = [...messages];
-    msgs.push(userMessage(input));
-
     setMessages((current) => [...current, userMessage(input)]);
     setInput("");
 
-    const response =
-      (await chatCompletion({ messagesData: msgs, apiKey: apiKeys.openai })) ||
-      "Response error ....";
-    setMessages((prevMessages) => [...prevMessages, aiMessage(response)]);
-    handleSendMessage();
+    handleOPenAISubmission();
+    handleGeminiSubmission();
   };
 
   const apiKey = apiKeys.gemini ?? "";
@@ -57,7 +50,7 @@ export default function MessageForm() {
   });
 
   useEffect(() => {
-    const initChat = () => {
+    const initGeminiChat = () => {
       try {
         const chatSession = model.startChat({
           generationConfig,
@@ -70,20 +63,11 @@ export default function MessageForm() {
       }
     };
 
-    initChat();
+    initGeminiChat();
   }, []);
 
-  const handleSendMessage = async () => {
+  const handleGeminiSubmission = async () => {
     try {
-      const userMessage = {
-        type: MessageType.Send,
-        name: "YOU",
-        timestamp: new Date(),
-        message: input,
-      };
-
-      setMessages((prevMessages) => [...prevMessages, userMessage]);
-      setInput("");
       if (chat) {
         const response = await chat.sendMessage(input);
         const botMessage = {
@@ -97,6 +81,17 @@ export default function MessageForm() {
     } catch (error) {
       setError("There is an error sending the message");
     }
+  };
+
+  const handleOPenAISubmission = async () => {
+    // SY TODO: temporary workaround for state not immediately reflected after set
+    const msgs = [...messages];
+    msgs.push(userMessage(input));
+
+    const response =
+      (await chatCompletion({ messagesData: msgs, apiKey: apiKeys.openai })) ||
+      "Response error ....";
+    setMessages((prevMessages) => [...prevMessages, aiMessage(response)]);
   };
 
   return (
