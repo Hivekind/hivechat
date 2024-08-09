@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { safetySettings, generationConfig } from "@/data/gemini-settings";
+import OpenAI from "openai";
 
 interface ChatSession {
   sendMessage: (
@@ -17,7 +18,7 @@ interface ChatSession {
 }
 
 import { chatCompletion } from "@/lib/openai";
-import { MessageType } from "@/types";
+import { AIModel } from "@/types";
 import { userMessage, aiMessage } from "@/lib/utils";
 
 export default function MessageForm() {
@@ -26,6 +27,41 @@ export default function MessageForm() {
   const apiKeys = useRecoilValue(apiKeysState);
   const [chat, setChat] = useState<ChatSession | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [openAIPending, setOpenAIPending] = useState<boolean>(false);
+  const [openAIClient, setOpenAIClient] = useState<OpenAI | null>(null);
+
+  useEffect(() => {
+    const client = new OpenAI({
+      apiKey: apiKeys.openai,
+      dangerouslyAllowBrowser: true,
+    });
+
+    setOpenAIClient(client);
+  }, [apiKeys]);
+
+  useEffect(() => {
+    if (!openAIPending) return;
+
+    const submitToOpenAI = async () => {
+      try {
+        const response =
+          (await chatCompletion({
+            messagesData: messages,
+            client: openAIClient,
+          })) || "OpenAI response error";
+
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          aiMessage(response, AIModel.OpenAI),
+        ]);
+      } catch (error) {
+        console.error("Error submitting to OpenAI:", error);
+      }
+    };
+
+    setOpenAIPending(false);
+    submitToOpenAI();
+  }, [messages, openAIPending, setOpenAIPending]);
 
   const onChange = (event: React.FormEvent<HTMLInputElement>) => {
     setInput(event.currentTarget.value);
@@ -38,8 +74,8 @@ export default function MessageForm() {
     setMessages((current) => [...current, userMessage(input)]);
     setInput("");
 
-    handleOpenAISubmission();
     handleGeminiSubmission();
+    setOpenAIPending(true);
   };
 
   const apiKey = apiKeys.gemini ?? "";
@@ -70,28 +106,12 @@ export default function MessageForm() {
     try {
       if (chat) {
         const response = await chat.sendMessage(input);
-        const botMessage = {
-          type: MessageType.Recv,
-          name: "AI",
-          timestamp: new Date(),
-          message: response.response.text(),
-        };
+        const botMessage = aiMessage(response.response.text(), AIModel.Gemini);
         setMessages((prevMessages) => [...prevMessages, { ...botMessage }]);
       }
     } catch (error) {
       setError("There is an error sending the message");
     }
-  };
-
-  const handleOpenAISubmission = async () => {
-    // SY TODO: temporary workaround for state not immediately reflected after set
-    const msgs = [...messages];
-    msgs.push(userMessage(input));
-
-    const response =
-      (await chatCompletion({ messagesData: msgs, apiKey: apiKeys.openai })) ||
-      "Response error ....";
-    setMessages((prevMessages) => [...prevMessages, aiMessage(response)]);
   };
 
   return (
