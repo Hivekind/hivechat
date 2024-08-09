@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { MessageData, MessageType } from "@/types";
+import { MessageData, MessageType, AIModel } from "@/types";
 
 const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
@@ -7,42 +7,43 @@ const openai = new OpenAI({
 });
 
 const toOpenAIMessages = (messagesData: MessageData[]) => {
-  const messages: OpenAI.ChatCompletionMessageParam[] = messagesData.map(
-    (messageData) => {
-      return {
-        role: messageData.type === MessageType.Send ? "user" : "assistant",
-        content: messageData.message,
-      };
-    }
-  );
+  const messages: OpenAI.ChatCompletionMessageParam[] = messagesData
+    .filter((messageData) => {
+      // Discard messages as respponse from other AI models
+      return !(messageData.type === MessageType.Recv && messageData.name !== AIModel.OpenAI);
+    })
+    .map(
+      (messageData) => {
+        return {
+          role: messageData.type === MessageType.Send ? "user" : "assistant",
+          content: messageData.message,
+        };
+      }
+    );
 
   return messages;
 };
 
 type chatCompletionProps = {
   messagesData: MessageData[];
-  apiKey?: string;
+  client: OpenAI | null;
 };
 
 export const chatCompletion = async ({
   messagesData,
-  apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+  client,
 }: chatCompletionProps) => {
-  const messages = toOpenAIMessages(messagesData);
+  if (!client) {
+    throw new Error("OpenAI client not initialized");
+  }
 
-  const client = new OpenAI({
-    apiKey,
-    dangerouslyAllowBrowser: true,
-  });
+  const messages = toOpenAIMessages(messagesData);
 
   try {
     const completion = await client.chat.completions.create({
       model: "gpt-4o-mini",
       messages: messages,
     });
-
-    console.log("completion -- ", completion);
-    console.log("message -- ", completion.choices[0].message.content);
 
     return completion.choices[0].message.content;
   } catch (error) {

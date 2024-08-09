@@ -3,6 +3,12 @@ export const enum MessageType {
   Recv = 'recv',
 }
 
+export const enum AIModel {
+  AI = 'AI',
+  OpenAI = 'OpenAI',
+  Gemini = 'Gemini',
+}
+
 export type MessageData = {
   name: string;
   timestamp?: Date;

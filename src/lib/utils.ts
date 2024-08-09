@@ -15,9 +15,9 @@ export const userMessage = (message: string): MessageData => {
   };
 };
 
-export const aiMessage = (message: string): MessageData => {
+export const aiMessage = (message: string, name: string): MessageData => {
   return {
-    name: "AI",
+    name,
     message,
     type: MessageType.Recv,
     timestamp: new Date(),

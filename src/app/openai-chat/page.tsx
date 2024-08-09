@@ -3,11 +3,22 @@
 import { useState, useEffect } from "react";
 import { chatCompletion } from "@/lib/openai";
 import { aiMessage, userMessage } from "@/lib/utils";
-import { MessageData } from "@/types";
+import { MessageData, AIModel } from "@/types";
+import OpenAI from "openai";
 
 export default function ChatBot() {
   const [messages, setMessages] = useState<MessageData[]>([]);
   const [userInput, setUserInput] = useState("");
+  const [openAIClient, setOpenAIClient] = useState<OpenAI | null>(null);
+
+  useEffect(() => {
+    const client = new OpenAI({
+      apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+      dangerouslyAllowBrowser: true,
+    });
+
+    setOpenAIClient(client);
+  }, []);
 
   // get chat history from session storage
   useEffect(() => {
@@ -15,18 +26,14 @@ export default function ChatBot() {
     if (storedMessages) {
       setMessages(JSON.parse(storedMessages));
     } else {
-      setMessages([
-        aiMessage("Hello, how may I help you?")
-      ]);
+      setMessages([aiMessage("Hello, how may I help you?", AIModel.OpenAI)]);
     }
   }, []);
-
 
   // save chat history to session storage
   useEffect(() => {
     sessionStorage.setItem("chatHistory", JSON.stringify(messages));
   }, [messages]);
-
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -38,16 +45,18 @@ export default function ChatBot() {
     const msgs = [...messages];
     msgs.push(userMessage(userInput));
 
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      userMessage(userInput),
-    ]);
+    setMessages((prevMessages) => [...prevMessages, userMessage(userInput)]);
     setUserInput("");
 
-    const response = (await chatCompletion({ messagesData: msgs })) || "Response error ....";
+    const response =
+      (await chatCompletion({
+        messagesData: msgs,
+        client: openAIClient,
+      })) || "Response error ....";
+
     setMessages((prevMessages) => [
       ...prevMessages,
-      aiMessage(response),
+      aiMessage(response, AIModel.OpenAI),
     ]);
   };
 
