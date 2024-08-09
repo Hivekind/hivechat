@@ -9,7 +9,14 @@ export default function ChatBox() {
   const messages: MessageData[] = useRecoilValue(messageState);
 
   return (
-    <main style={{ flex: 1, overflowY: "auto", padding: "10px" }}>
+    <main
+      style={{
+        flex: 1,
+        overflowY: "scroll",
+        padding: "10px",
+        maxHeight: "80vh",
+      }}
+    >
       {messages.map((message, index) => {
         if (message.type === MessageType.Send) {
           return (
@@ -54,9 +61,14 @@ export function MessageBubble({
             <AvatarFallback>AI</AvatarFallback>
           </Avatar>
 
-          <div>
+          <div className="max-w-4xl">
             <p>{message}</p>
-            <p suppressHydrationWarning>{timestamp.toString()}</p>
+            <p
+              suppressHydrationWarning
+              className="text-xs text-slate-500 text-end"
+            >
+              {timestamp.toString()}
+            </p>
           </div>
         </div>
       </div>
