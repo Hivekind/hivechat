@@ -49,8 +49,7 @@ export default function MessageForm() {
     handleSendMessage();
   };
 
-  const apiKey =
-    process.env.GEMINI_API_KEY ?? "AIzaSyCxVKjkJKsCg1O8FnSUSRXXsHiPYPSd6_8";
+  const apiKey = apiKeys.gemini ?? "";
   const genAI = new GoogleGenerativeAI(apiKey);
 
   const model = genAI.getGenerativeModel({
