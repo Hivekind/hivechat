@@ -1,6 +1,7 @@
 import { atom } from "recoil";
+import { MessageData } from "@/types";
 
-export const messageState = atom({
+export const messageState = atom<MessageData[]>({
   key: "messageState",
   default: [
     {

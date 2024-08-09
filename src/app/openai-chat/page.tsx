@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { chatCompletion } from "@/lib/openai";
-import type { Message } from "@/lib/openai";
+import { MessageData } from "@/types";
 
 export default function ChatBot() {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<MessageData[]>([]);
   const [userInput, setUserInput] = useState("");
 
   // get chat history from session storage
@@ -15,7 +15,12 @@ export default function ChatBot() {
       setMessages(JSON.parse(storedMessages));
     } else {
       setMessages([
-        { role: "assistant", content: "Hello, how may I help you?" },
+        {
+          type: "recv",
+          name: "AI",
+          timestamp: new Date(),
+          message: "Hello, how may I help you?",
+        },
       ]);
     }
   }, []);
@@ -35,18 +40,33 @@ export default function ChatBot() {
     }
 
     const msgs = [...messages];
-    msgs.push({ role: "user", content: userInput });
+    msgs.push({
+      type: "send",
+      name: "YOU",
+      timestamp: new Date(),
+      message: userInput,
+    });
 
     setMessages((prevMessages) => [
       ...prevMessages,
-      { role: "user", content: userInput },
+      {
+        type: "send",
+        name: "YOU",
+        timestamp: new Date(),
+        message: userInput,
+      },
     ]);
     setUserInput("");
 
-    const response = (await chatCompletion(msgs)) || "Response error ....";
+    const response = (await chatCompletion({ messagesData: msgs })) || "Response error ....";
     setMessages((prevMessages) => [
       ...prevMessages,
-      { role: "assistant", content: response },
+      {
+        type: "recv",
+        name: "AI",
+        timestamp: new Date(),
+        message: response,
+      }
     ]);
   };
 
@@ -57,12 +77,12 @@ export default function ChatBot() {
           <div
             key={index}
             className={`p-4 m-4 rounded-lg ${
-              message.role === "user"
+              message.type === "send"
                 ? "bg-gray-200 text-gray-800"
                 : "bg-blue-500 text-white"
             }`}
           >
-            {message.content}
+            {message.message}
           </div>
         ))}
       </div>

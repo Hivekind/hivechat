@@ -3,9 +3,10 @@
 import { messageState } from "@/atoms/messages";
 import { useRecoilValue } from "recoil";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { MessageData } from "@/types";
 
 export default function ChatBox() {
-  const messages = useRecoilValue(messageState);
+  const messages: MessageData[] = useRecoilValue(messageState);
 
   return (
     <main style={{ flex: 1, overflowY: "auto", padding: "10px" }}>
@@ -34,19 +35,12 @@ export default function ChatBox() {
   );
 }
 
-type MessageProps = {
-  name: string;
-  timestamp?: Date;
-  message: string;
-  type: string;
-};
-
 export function MessageBubble({
   name,
   timestamp = new Date(),
   message,
   type,
-}: MessageProps) {
+}: MessageData) {
   const className =
     type === "send" ? "ml-auto bg-primary text-primary-foreground" : "bg-muted";
   return (
@@ -74,7 +68,7 @@ export function RecvBubble({
   name,
   timestamp,
   message,
-}: Omit<MessageProps, "type">) {
+}: Omit<MessageData, "type">) {
   return MessageBubble({ name, timestamp, message, type: "recv" });
 }
 
@@ -82,6 +76,6 @@ export function SendBubble({
   name,
   timestamp,
   message,
-}: Omit<MessageProps, "type">) {
+}: Omit<MessageData, "type">) {
   return MessageBubble({ name, timestamp, message, type: "send" });
 }

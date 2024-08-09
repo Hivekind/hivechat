@@ -1,18 +1,42 @@
 import OpenAI from "openai";
+import { MessageData } from "@/types";
 
 const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true,
 });
 
-export type Message = {
-  role: "user" | "assistant" | "system";
-  content: string;
+const toOpenAIMessages = (messagesData: MessageData[]) => {
+  const messages: OpenAI.ChatCompletionMessageParam[] = messagesData.map(
+    (messageData) => {
+      return {
+        role: messageData.type === "send" ? "user" : "assistant",
+        content: messageData.message,
+      };
+    }
+  );
+
+  return messages;
 };
 
-export const chatCompletion = async (messages: Message[]) => {
+type chatCompletionProps = {
+  messagesData: MessageData[];
+  apiKey?: string;
+};
+
+export const chatCompletion = async ({
+  messagesData,
+  apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+}: chatCompletionProps) => {
+  const messages = toOpenAIMessages(messagesData);
+
+  const client = new OpenAI({
+    apiKey,
+    dangerouslyAllowBrowser: true,
+  });
+
   try {
-    const completion = await openai.chat.completions.create({
+    const completion = await client.chat.completions.create({
       model: "gpt-4o-mini",
       messages: messages,
     });
@@ -75,7 +99,10 @@ export const createAssistant = async () => {
   }
 };
 
-export const createAndRunThread = async (assistantId: string, prompt: string) => {
+export const createAndRunThread = async (
+  assistantId: string,
+  prompt: string
+) => {
   const run = openai.beta.threads.createAndRunPoll({
     assistant_id: assistantId,
     thread: {
@@ -85,7 +112,7 @@ export const createAndRunThread = async (assistantId: string, prompt: string) =>
           content: prompt,
         },
       ],
-    }
+    },
   });
 
   const result = await run;
@@ -168,8 +195,10 @@ export const runThread = async (threadId: string, assistantId: string) => {
   return response;
 };
 
-
-export const runThreadAndPoll = async (threadId: string, assistantId: string) => {
+export const runThreadAndPoll = async (
+  threadId: string,
+  assistantId: string
+) => {
   const run = openai.beta.threads.runs.createAndPoll(threadId, {
     assistant_id: assistantId,
   });
