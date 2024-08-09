@@ -1,20 +1,14 @@
 import { atom } from "recoil";
-import { MessageData } from "@/types";
+import { MessageData, MessageType } from "@/types";
 
 export const messageState = atom<MessageData[]>({
   key: "messageState",
   default: [
     {
-      type: "recv",
+      type: MessageType.Recv,
       name: "AI",
       timestamp: new Date(),
       message: "Hello!",
-    },
-    {
-      type: "send",
-      name: "YOU",
-      timestamp: new Date(),
-      message: "test",
     },
   ],
 });

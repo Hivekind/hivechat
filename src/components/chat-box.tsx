@@ -3,7 +3,7 @@
 import { messageState } from "@/atoms/messages";
 import { useRecoilValue } from "recoil";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { MessageData } from "@/types";
+import { MessageData, MessageType } from "@/types";
 
 export default function ChatBox() {
   const messages: MessageData[] = useRecoilValue(messageState);
@@ -11,7 +11,7 @@ export default function ChatBox() {
   return (
     <main style={{ flex: 1, overflowY: "auto", padding: "10px" }}>
       {messages.map((message, index) => {
-        if (message.type === "send") {
+        if (message.type === MessageType.Send) {
           return (
             <SendBubble
               key={index}
@@ -20,7 +20,7 @@ export default function ChatBox() {
               message={message.message}
             />
           );
-        } else if (message.type === "recv") {
+        } else if (message.type === MessageType.Recv) {
           return (
             <RecvBubble
               key={index}
@@ -42,7 +42,7 @@ export function MessageBubble({
   type,
 }: MessageData) {
   const className =
-    type === "send" ? "ml-auto bg-primary text-primary-foreground" : "bg-muted";
+    type === MessageType.Send ? "ml-auto bg-primary text-primary-foreground" : "bg-muted";
   return (
     <div className="mt-4">
       <div
@@ -69,7 +69,7 @@ export function RecvBubble({
   timestamp,
   message,
 }: Omit<MessageData, "type">) {
-  return MessageBubble({ name, timestamp, message, type: "recv" });
+  return MessageBubble({ name, timestamp, message, type: MessageType.Recv });
 }
 
 export function SendBubble({
@@ -77,5 +77,5 @@ export function SendBubble({
   timestamp,
   message,
 }: Omit<MessageData, "type">) {
-  return MessageBubble({ name, timestamp, message, type: "send" });
+  return MessageBubble({ name, timestamp, message, type: MessageType.Send });
 }

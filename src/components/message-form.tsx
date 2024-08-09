@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { chatCompletion } from "@/lib/openai";
+import { MessageType } from "@/types";
+import { userMessage, aiMessage } from "@/lib/utils";
 
 export default function MessageForm() {
   const [input, setInput] = useState("");
@@ -25,33 +27,18 @@ export default function MessageForm() {
 
     // SY TODO: temporary workaround for state not immediately reflected after set
     const msgs = [...messages];
-    msgs.push({
-      type: "send",
-      name: "YOU",
-      timestamp: new Date(),
-      message: input,
-    });
+    msgs.push(userMessage(input));
 
     setMessages((current) => [
       ...current,
-      {
-        type: "send",
-        name: "YOU",
-        timestamp: new Date(),
-        message: input,
-      },
+      userMessage(input),
     ]);
     setInput("");
 
     const response = (await chatCompletion({ messagesData: msgs, apiKey: apiKeys.openai })) || "Response error ....";
     setMessages((prevMessages) => [
       ...prevMessages,
-      {
-        type: "recv",
-        name: "AI",
-        timestamp: new Date(),
-        message: response,
-      }
+      aiMessage(response),
     ]);
   };
 

@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { MessageData } from "@/types";
+import { MessageData, MessageType } from "@/types";
 
 const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
@@ -10,7 +10,7 @@ const toOpenAIMessages = (messagesData: MessageData[]) => {
   const messages: OpenAI.ChatCompletionMessageParam[] = messagesData.map(
     (messageData) => {
       return {
-        role: messageData.type === "send" ? "user" : "assistant",
+        role: messageData.type === MessageType.Send ? "user" : "assistant",
         content: messageData.message,
       };
     }

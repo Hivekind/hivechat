@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { chatCompletion } from "@/lib/openai";
+import { aiMessage, userMessage } from "@/lib/utils";
 import { MessageData } from "@/types";
 
 export default function ChatBot() {
@@ -15,12 +16,7 @@ export default function ChatBot() {
       setMessages(JSON.parse(storedMessages));
     } else {
       setMessages([
-        {
-          type: "recv",
-          name: "AI",
-          timestamp: new Date(),
-          message: "Hello, how may I help you?",
-        },
+        aiMessage("Hello, how may I help you?")
       ]);
     }
   }, []);
@@ -40,33 +36,18 @@ export default function ChatBot() {
     }
 
     const msgs = [...messages];
-    msgs.push({
-      type: "send",
-      name: "YOU",
-      timestamp: new Date(),
-      message: userInput,
-    });
+    msgs.push(userMessage(userInput));
 
     setMessages((prevMessages) => [
       ...prevMessages,
-      {
-        type: "send",
-        name: "YOU",
-        timestamp: new Date(),
-        message: userInput,
-      },
+      userMessage(userInput),
     ]);
     setUserInput("");
 
     const response = (await chatCompletion({ messagesData: msgs })) || "Response error ....";
     setMessages((prevMessages) => [
       ...prevMessages,
-      {
-        type: "recv",
-        name: "AI",
-        timestamp: new Date(),
-        message: response,
-      }
+      aiMessage(response),
     ]);
   };
 
