@@ -38,7 +38,7 @@ export default function MessageForm() {
     setMessages((current) => [...current, userMessage(input)]);
     setInput("");
 
-    handleOPenAISubmission();
+    handleOpenAISubmission();
     handleGeminiSubmission();
   };
 
@@ -83,7 +83,7 @@ export default function MessageForm() {
     }
   };
 
-  const handleOPenAISubmission = async () => {
+  const handleOpenAISubmission = async () => {
     // SY TODO: temporary workaround for state not immediately reflected after set
     const msgs = [...messages];
     msgs.push(userMessage(input));
