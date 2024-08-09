@@ -9,7 +9,14 @@ export default function ChatBox() {
   const messages: MessageData[] = useRecoilValue(messageState);
 
   return (
-    <main style={{ flex: 1, overflowY: "auto", padding: "10px" }}>
+    <main
+      style={{
+        flex: 1,
+        overflowY: "scroll",
+        padding: "10px",
+        maxHeight: "80vh",
+      }}
+    >
       {messages.map((message, index) => {
         if (message.type === MessageType.Send) {
           return (
