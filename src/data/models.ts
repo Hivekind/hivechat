@@ -1,4 +1,4 @@
-export const types = ["GPT-3", "Codex"] as const;
+export const types = ["GPT-3", "Codex", "Gemini"] as const;
 
 export type ModelType = (typeof types)[number];
 
@@ -58,5 +58,13 @@ export const models: Model<ModelType>[] = [
       "Almost as capable as Davinci Codex, but slightly faster. This speed advantage may make it preferable for real-time applications.",
     type: "Codex",
     strengths: "Real-time application where low-latency is preferable",
+  },
+  {
+    id: "f4b8f4b4-7f0b-4f0b-8e3d-3f1f2f1b1f1f",
+    name: "gemini-1.5-flash",
+    description:
+      "A model that can generate text and code, with a focus on speed and low-latency. It is particularly good at generating short responses.",
+    type: "Gemini",
+    strengths: "Real-time applications, short responses",
   },
 ];
