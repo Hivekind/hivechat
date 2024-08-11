@@ -56,7 +56,7 @@ export function MessageBubble({
   return (
     <div className="mt-4">
       <div
-        className={`flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm ${className}`}
+        className={`flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm prose ${className}`}
       >
         <div className="flex items-center space-x-4">
           {type === MessageType.Recv && <p className="font-semibold">{name}</p>}
@@ -67,12 +67,10 @@ export function MessageBubble({
           </Avatar>
 
           <div className="max-w-4xl">
-            <div>
-              <ReactMarkdown>{message}</ReactMarkdown>
-            </div>
+            <ReactMarkdown>{message}</ReactMarkdown>
             <p
               suppressHydrationWarning
-              className="text-xs text-slate-500 text-end"
+              className={`text-xs text-end ${type === MessageType.Recv ? "text-slate-500" : "text-slate-400"}`}
             >
               {timestamp.toString()}
             </p>
