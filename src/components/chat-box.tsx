@@ -4,6 +4,7 @@ import { messageState } from "@/atoms/messages";
 import { useRecoilValue } from "recoil";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MessageData, MessageType } from "@/types";
+import ReactMarkdown from "react-markdown";
 
 export default function ChatBox() {
   const messages: MessageData[] = useRecoilValue(messageState);
@@ -49,14 +50,16 @@ export function MessageBubble({
   type,
 }: MessageData) {
   const className =
-    type === MessageType.Send ? "ml-auto bg-primary text-primary-foreground" : "bg-muted";
+    type === MessageType.Send
+      ? "ml-auto bg-primary text-primary-foreground"
+      : "bg-muted";
   return (
     <div className="mt-4">
       <div
-        className={`flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm ${className}`}
+        className={`flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm prose ${className}`}
       >
         <div className="flex items-center space-x-4">
-          { type === MessageType.Recv && <p className="font-semibold">{name}</p> }
+          {type === MessageType.Recv && <p className="font-semibold">{name}</p>}
 
           <Avatar>
             <AvatarImage src="https://github.com/shadcn.png" />
@@ -64,10 +67,10 @@ export function MessageBubble({
           </Avatar>
 
           <div className="max-w-4xl">
-            <p>{message}</p>
+            <ReactMarkdown>{message}</ReactMarkdown>
             <p
               suppressHydrationWarning
-              className="text-xs text-slate-500 text-end"
+              className={`text-xs text-end ${type === MessageType.Recv ? "text-slate-500" : "text-slate-400"}`}
             >
               {timestamp.toString()}
             </p>
