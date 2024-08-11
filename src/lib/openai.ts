@@ -10,16 +10,17 @@ const toOpenAIMessages = (messagesData: MessageData[]) => {
   const messages: OpenAI.ChatCompletionMessageParam[] = messagesData
     .filter((messageData) => {
       // Discard messages as respponse from other AI models
-      return !(messageData.type === MessageType.Recv && messageData.name !== AIModel.OpenAI);
+      return !(
+        messageData.type === MessageType.Recv &&
+        messageData.name !== AIModel.OpenAI
+      );
     })
-    .map(
-      (messageData) => {
-        return {
-          role: messageData.type === MessageType.Send ? "user" : "assistant",
-          content: messageData.message,
-        };
-      }
-    );
+    .map((messageData) => {
+      return {
+        role: messageData.type === MessageType.Send ? "user" : "assistant",
+        content: messageData.message,
+      };
+    });
 
   return messages;
 };
@@ -49,6 +50,34 @@ export const chatCompletion = async ({
   } catch (error) {
     console.error(error);
     throw new Error("OpenAI Error: chat.completons.create");
+  }
+};
+
+export const chatStream = async ({
+  messagesData,
+  client,
+  onStream,
+}: chatCompletionProps & { onStream: (chunk: any) => void }) => {
+  if (!client) {
+    throw new Error("OpenAI client not initialized");
+  }
+
+  const messages = toOpenAIMessages(messagesData);
+
+  try {
+    const stream = await client.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: messages,
+      stream: true,
+    });
+
+    for await (const chunk of stream) {
+      console.log(chunk.choices[0]?.delta?.content || "");
+      onStream(chunk);
+    }
+  } catch (error) {
+    console.error(error);
+    throw new Error("OpenAI Error: chat.completions.create stream");
   }
 };
 

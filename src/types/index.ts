@@ -1,12 +1,12 @@
 export const enum MessageType {
-  Send = 'send',
-  Recv = 'recv',
+  Send = "send",
+  Recv = "recv",
 }
 
 export const enum AIModel {
-  AI = 'AI',
-  OpenAI = 'OpenAI',
-  Gemini = 'Gemini',
+  AI = "AI",
+  OpenAI = "OpenAI",
+  Gemini = "Gemini",
 }
 
 export type MessageData = {
@@ -14,4 +14,5 @@ export type MessageData = {
   timestamp?: Date;
   message: string;
   type: MessageType;
+  streaming?: boolean;
 };
