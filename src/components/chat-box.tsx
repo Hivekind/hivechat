@@ -56,7 +56,7 @@ export function MessageBubble({
   return (
     <div className="mt-4">
       <div
-        className={`flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm prose ${className}`}
+        className={`flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm ${className}`}
       >
         <div className="flex items-center space-x-4">
           {type === MessageType.Recv && <p className="font-semibold">{name}</p>}
@@ -66,7 +66,7 @@ export function MessageBubble({
             <AvatarFallback>AI</AvatarFallback>
           </Avatar>
 
-          <div className="max-w-4xl">
+          <div className={`max-w-4xl prose ${type === MessageType.Send ? "text-primary-foreground" : ""}`}>
             <ReactMarkdown>{message}</ReactMarkdown>
             <p
               suppressHydrationWarning
