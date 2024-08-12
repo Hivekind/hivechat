@@ -1,32 +1,122 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 import { useRecoilState } from "recoil";
 import { openAIApiKeyState, geminiApiKeyState } from "@/atoms/api-keys";
 import Image from "next/image";
 import SettingsLogo from "../../public/images/settings.svg";
 
-export default function ApiKeyDialog() {
-  const [openAIApiKey, setOpenAIApiKey] = useRecoilState(openAIApiKeyState);
-  const [geminiApiKey, setGeminiApiKey] = useRecoilState(geminiApiKeyState);
+import { checkOpenAI, checkGemini, maskApiKey } from "@/lib/utils";
+import { ButtonStates } from "./stateful-button";
+import { useState } from "react";
+import { ApiKeyInput } from "./api-key-input";
 
-  const onSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
+export default function ApiKeyDialog() {
+  const [openAIApiPersistedKey, setOpenAIApiPersistedKey] =
+    useRecoilState(openAIApiKeyState);
+  const [geminiApiPersistedKey, setGeminiApiPersistedKey] =
+    useRecoilState(geminiApiKeyState);
+
+  const [openAIApiKey, setOpenAIApiKey] = useState(openAIApiPersistedKey);
+  const [geminiApiKey, setGeminiApiKey] = useState(geminiApiPersistedKey);
+
+  const [openAIApiKeyError, setOpenAIApiKeyError] = useState(false);
+  const [geminiApiKeyError, setGeminiApiKeyError] = useState(false);
+
+  const [openAIButtonState, setOpenAIButtonState] = useState(
+    ButtonStates.default
+  );
+  const [geminiButtonState, setGeminiButtonState] = useState(
+    ButtonStates.default
+  );
+
+  const onSubmitOpenAI: React.FormEventHandler<HTMLFormElement> = async (
+    event
+  ) => {
     event.preventDefault();
+    setOpenAIButtonState(ButtonStates.busy);
+
+    if (openAIApiKey === "") {
+      setOpenAIButtonState(ButtonStates.success);
+      setOpenAIApiKeyError(false);
+      setOpenAIApiPersistedKey(openAIApiKey);
+      return;
+    }
+
+    const response = await checkOpenAI(openAIApiKey);
+
+    if (response.status != 200) {
+      setOpenAIButtonState(ButtonStates.default);
+      setOpenAIApiKeyError(true);
+    } else {
+      setOpenAIButtonState(ButtonStates.success);
+      setOpenAIApiKeyError(false);
+      setOpenAIApiPersistedKey(openAIApiKey);
+    }
+  };
+
+  const onSubmitGemini: React.FormEventHandler<HTMLFormElement> = async (
+    event
+  ) => {
+    event.preventDefault();
+    setGeminiButtonState(ButtonStates.busy);
+
+    if (geminiApiKey === "") {
+      setGeminiButtonState(ButtonStates.success);
+      setGeminiApiKeyError(false);
+      setGeminiApiPersistedKey(geminiApiKey);
+    }
+
+    try {
+      await checkGemini(geminiApiKey);
+      setGeminiButtonState(ButtonStates.success);
+      setGeminiApiKeyError(false);
+      setGeminiApiPersistedKey(geminiApiKey);
+    } catch (error) {
+      console.log(error);
+      setGeminiButtonState(ButtonStates.default);
+      setGeminiApiKeyError(true);
+      return;
+    }
   };
 
   return (
-    <Dialog>
+    <Dialog
+      onOpenChange={(isOpen) => {
+        // reset the dialog state when the modal is opened
+        if (isOpen) {
+          setOpenAIButtonState(ButtonStates.default);
+          setGeminiButtonState(ButtonStates.default);
+
+          // reset input fields if there are any errors
+          if (openAIApiKeyError) {
+            setOpenAIApiKey("");
+            setOpenAIApiKeyError(false);
+          }
+          if (geminiApiKeyError) {
+            setGeminiApiKey("");
+            setGeminiApiKeyError(false);
+          }
+
+          // if there's an api key persisted, assume that the key is valid
+          if (openAIApiPersistedKey) {
+            setOpenAIApiKey(maskApiKey(openAIApiPersistedKey));
+            setOpenAIButtonState(ButtonStates.disabled);
+          }
+          if (geminiApiPersistedKey) {
+            setGeminiApiKey(maskApiKey(geminiApiPersistedKey));
+            setGeminiButtonState(ButtonStates.disabled);
+          }
+        }
+      }}
+    >
       <DialogTrigger asChild>
         <div className="flex gap-2">
           <Image src={SettingsLogo} alt="Hivekind" width={16} height={16} />
@@ -35,45 +125,36 @@ export default function ApiKeyDialog() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Enter API Key</DialogTitle>
+          <DialogTitle>API Keys</DialogTitle>
           <DialogDescription>
-            Your API Key is stored locally on your browser and never sent
-            anywhere else.
+            We store your API keys on your browser and use it only for
+            communicating with the selected API models
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={onSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="openai" className="text-right">
-                OpenAI
-              </Label>
-              <Input
-                id="openai"
-                placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                className="col-span-3"
-                value={openAIApiKey}
-                onChange={(e) => setOpenAIApiKey(e.target.value)}
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="gemini" className="text-right">
-                Gemini
-              </Label>
-              <Input
-                id="gemini"
-                placeholder="AIxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                className="col-span-3"
-                value={geminiApiKey}
-                onChange={(e) => setGeminiApiKey(e.target.value)}
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button type="submit">Save changes</Button>
-            </DialogClose>
-          </DialogFooter>
-        </form>
+        <div className="grid gap-8">
+          <ApiKeyInput
+            name="OpenAI"
+            placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            url="https://platform.openai.com/account/api-keys"
+            onSubmit={onSubmitOpenAI}
+            value={openAIApiKey ?? ""}
+            setValue={setOpenAIApiKey}
+            buttonState={openAIButtonState}
+            setButtonState={setOpenAIButtonState}
+            isValid={!openAIApiKeyError}
+          />
+          <ApiKeyInput
+            name="Gemini"
+            placeholder="AIxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            url="https://makersuite.google.com/app/apikey"
+            onSubmit={onSubmitGemini}
+            value={geminiApiKey ?? ""}
+            setValue={setGeminiApiKey}
+            buttonState={geminiButtonState}
+            setButtonState={setGeminiButtonState}
+            isValid={!geminiApiKeyError}
+          />
+        </div>
       </DialogContent>
     </Dialog>
   );
