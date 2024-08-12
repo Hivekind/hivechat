@@ -21,12 +21,14 @@ export const localStorageEffect: (key: string) => AtomEffect<any> =
     }
   };
 
-export const apiKeysState = atom({
-  key: "apiKeysState",
-  default: {
-    openai: "",
-    anthropic: "",
-    gemini: "",
-  },
-  effects: [localStorageEffect("apiKeys")],
+export const openAIApiKeyState = atom({
+  key: "openAIApiKeyState",
+  default: "",
+  effects: [localStorageEffect("openAIApiKey")],
+});
+
+export const geminiApiKeyState = atom({
+  key: "geminiApiKeyState",
+  default: "",
+  effects: [localStorageEffect("geminiApiKey")],
 });
