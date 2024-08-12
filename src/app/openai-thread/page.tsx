@@ -2,7 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { initiateChat, continueChat } from "@/lib/openai";
-import type { Message } from "@/lib/openai";
+
+export type Message = {
+  role: string;
+  content: string;
+};
 
 export default function ChatBot() {
   const [messages, setMessages] = useState<Message[]>([]);
