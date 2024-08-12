@@ -6,7 +6,7 @@ import MessageForm from "@/components/message-form";
 import ChatBox from "@/components/chat-box";
 import ApiKeyDialog from "@/components/api-key-dialog";
 import { MessageData } from "@/types";
-import { messageState } from "@/atoms/messages";
+import { window1State, window2State } from "@/atoms/messages";
 
 export default function Playground() {
   return (
@@ -17,7 +17,8 @@ export default function Playground() {
 }
 
 function MainApp() {
-  const messages: MessageData[] = useRecoilValue(messageState);
+  const window1Messages: MessageData[] = useRecoilValue(window1State);
+  const window2Messages: MessageData[] = useRecoilValue(window2State);
   return (
     <>
       <div className="hidden h-full flex-col md:flex">
@@ -31,8 +32,8 @@ function MainApp() {
         <div className="p-8">
           <div className="flex h-full flex-col space-y-4">
             <div className="flex flex-row">
-              <ChatBox messages={messages} />
-              <ChatBox messages={messages} />
+              <ChatBox messages={window1Messages} />
+              <ChatBox messages={window2Messages} />
             </div>
             <MessageForm />
           </div>
