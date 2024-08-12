@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { messageState } from "@/atoms/messages";
+import { window1State, window2State } from "@/atoms/messages";
 import { apiKeysState } from "@/atoms/api-keys";
 import { streamedResponseState } from "@/atoms/streamed-response";
 
@@ -24,7 +24,8 @@ import { userMessage, aiMessage } from "@/lib/utils";
 
 export default function MessageForm() {
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useRecoilState(messageState);
+  const [window1Messages, setWindow1Messages] = useRecoilState(window1State);
+  const setWindow2Messages = useSetRecoilState(window2State);
   const apiKeys = useRecoilValue(apiKeysState);
   const [chat, setChat] = useState<ChatSession | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -49,7 +50,7 @@ export default function MessageForm() {
         let finalResponse = "";
 
         await chatStream({
-          messagesData: messages,
+          messagesData: window1Messages,
           client: openAIClient,
           onStream: (chunk) => {
             const chunkContent = chunk.choices[0]?.delta?.content || "";
@@ -59,7 +60,7 @@ export default function MessageForm() {
           },
         });
 
-        setMessages((prevMessages) => [
+        setWindow1Messages((prevMessages) => [
           ...prevMessages,
           aiMessage(finalResponse, AIModel.OpenAI),
         ]);
@@ -73,10 +74,10 @@ export default function MessageForm() {
     setOpenAIPending(false);
     streamOpenAI();
   }, [
-    messages,
+    window1Messages,
     openAIClient,
     openAIPending,
-    setMessages,
+    setWindow1Messages,
     setOpenAIPending,
     setStreamedResponse,
   ]);
@@ -89,7 +90,8 @@ export default function MessageForm() {
     event.preventDefault();
     if (!input || input === "") return;
 
-    setMessages((current) => [...current, userMessage(input)]);
+    setWindow1Messages((current) => [...current, userMessage(input)]);
+    setWindow2Messages((current) => [...current, userMessage(input)]);
     setInput("");
 
     handleGeminiSubmission();
@@ -125,7 +127,10 @@ export default function MessageForm() {
       if (chat) {
         const response = await chat.sendMessage(input);
         const botMessage = aiMessage(response.response.text(), AIModel.Gemini);
-        setMessages((prevMessages) => [...prevMessages, { ...botMessage }]);
+        setWindow2Messages((prevMessages) => [
+          ...prevMessages,
+          { ...botMessage },
+        ]);
       }
     } catch (error) {
       setError("There is an error sending the message");

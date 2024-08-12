@@ -6,7 +6,13 @@ import MessageForm from "@/components/message-form";
 import ChatBox from "@/components/chat-box";
 import ApiKeyDialog from "@/components/api-key-dialog";
 import { MessageData } from "@/types";
-import { messageState } from "@/atoms/messages";
+import { window1State, window2State } from "@/atoms/messages";
+import {
+  selectedModel1State,
+  selectedModel2State,
+} from "@/atoms/selected-model";
+import { getModel } from "@/data/models";
+import type { Model } from "@/data/models";
 
 export default function Playground() {
   return (
@@ -17,7 +23,18 @@ export default function Playground() {
 }
 
 function MainApp() {
-  const messages: MessageData[] = useRecoilValue(messageState);
+  const window1Messages: MessageData[] = useRecoilValue(window1State);
+  const window2Messages: MessageData[] = useRecoilValue(window2State);
+  const selectedModel1 = useRecoilValue(selectedModel1State);
+  const selectedModel2 = useRecoilValue(selectedModel2State);
+
+  const models: Model[] = [
+    getModel(selectedModel1),
+    getModel(selectedModel2),
+  ].filter((model) => model !== undefined) as Model[];
+
+  const messages = [window1Messages, window2Messages];
+
   return (
     <>
       <div className="hidden h-full flex-col md:flex">
@@ -31,8 +48,13 @@ function MainApp() {
         <div className="p-8">
           <div className="flex h-full flex-col space-y-4">
             <div className="flex flex-row">
-              <ChatBox messages={messages} />
-              <ChatBox messages={messages} />
+              {models.map((model, index) => (
+                <ChatBox
+                  key={model.id}
+                  messages={messages[index]}
+                  model={model}
+                />
+              ))}
             </div>
             <MessageForm />
           </div>

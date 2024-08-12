@@ -5,10 +5,16 @@ import { MessageData, MessageType, AIModel } from "@/types";
 import { streamedResponseState } from "@/atoms/streamed-response";
 import { uuid } from "@/lib/utils";
 import { RecvBubble, SendBubble } from "@/components/message-bubble";
+import { Model } from "@/data/models";
 
-export default function ChatBox({ messages }: { messages: MessageData[] }) {
+export default function ChatBox({
+  messages,
+  model,
+}: {
+  messages: MessageData[];
+  model: Model;
+}) {
   const streamedResponse = useRecoilValue(streamedResponseState);
-
   return (
     <main
       style={{
@@ -43,7 +49,7 @@ export default function ChatBox({ messages }: { messages: MessageData[] }) {
       })}
 
       {/* Render the ongoing streaming response for OpenAI */}
-      {streamedResponse && (
+      {streamedResponse && model.name === "gpt-4o-mini" && (
         <RecvBubble
           id={uuid()}
           name={AIModel.OpenAI}
