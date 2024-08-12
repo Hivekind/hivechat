@@ -2,15 +2,15 @@ export const types = ["GPT-3", "Gemini"] as const;
 
 export type ModelType = (typeof types)[number];
 
-export interface Model<Type = string> {
+export type Model = {
   id: string;
   name: string;
   description: string;
   strengths?: string;
-  type: Type;
-}
+  type: ModelType;
+};
 
-export const models: Model<ModelType>[] = [
+export const models: Model[] = [
   {
     id: "c305f976-8e38-42b1-9fb7-d21b2e34f0da",
     name: "gpt-4o-mini",

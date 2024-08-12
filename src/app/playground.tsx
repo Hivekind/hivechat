@@ -12,6 +12,7 @@ import {
   selectedModel2State,
 } from "@/atoms/selected-model";
 import { getModel } from "@/data/models";
+import type { Model } from "@/data/models";
 
 export default function Playground() {
   return (
@@ -27,7 +28,10 @@ function MainApp() {
   const selectedModel1 = useRecoilValue(selectedModel1State);
   const selectedModel2 = useRecoilValue(selectedModel2State);
 
-  const models = [getModel(selectedModel1), getModel(selectedModel2)];
+  const models: Model[] = [
+    getModel(selectedModel1),
+    getModel(selectedModel2),
+  ].filter((model) => model !== undefined) as Model[];
 
   const messages = [window1Messages, window2Messages];
 
