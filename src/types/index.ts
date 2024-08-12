@@ -10,6 +10,7 @@ export const enum AIModel {
 }
 
 export type MessageData = {
+  id: string;
   name: string;
   timestamp?: Date;
   message: string;

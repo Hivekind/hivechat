@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MessageData, MessageType, AIModel } from "@/types";
 import ReactMarkdown from "react-markdown";
 import { streamedResponseState } from "@/atoms/streamed-response";
+import { uuid } from "@/lib/utils";
 
 export default function ChatBox() {
   const messages: MessageData[] = useRecoilValue(messageState);
@@ -24,6 +25,7 @@ export default function ChatBox() {
         if (message.type === MessageType.Send) {
           return (
             <SendBubble
+              id={message.id}
               key={index}
               name={message.name}
               timestamp={message.timestamp}
@@ -33,6 +35,7 @@ export default function ChatBox() {
         } else if (message.type === MessageType.Recv) {
           return (
             <RecvBubble
+              id={message.id}
               key={index}
               name={message.name}
               timestamp={message.timestamp}
@@ -45,6 +48,7 @@ export default function ChatBox() {
       {/* Render the ongoing streaming response for OpenAI */}
       {streamedResponse && (
         <RecvBubble
+          id={uuid()}
           name={AIModel.OpenAI}
           message={streamedResponse}
           streaming={true}
@@ -105,12 +109,14 @@ export function MessageBubble({
 }
 
 export function RecvBubble({
+  id,
   name,
   timestamp,
   message,
   streaming = false,
 }: Omit<MessageData, "type">) {
   return MessageBubble({
+    id,
     name,
     timestamp,
     message,
@@ -120,9 +126,16 @@ export function RecvBubble({
 }
 
 export function SendBubble({
+  id,
   name,
   timestamp,
   message,
 }: Omit<MessageData, "type">) {
-  return MessageBubble({ name, timestamp, message, type: MessageType.Send });
+  return MessageBubble({
+    id,
+    name,
+    timestamp,
+    message,
+    type: MessageType.Send,
+  });
 }

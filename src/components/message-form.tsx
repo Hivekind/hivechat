@@ -72,7 +72,14 @@ export default function MessageForm() {
 
     setOpenAIPending(false);
     streamOpenAI();
-  }, [messages, openAIPending, setOpenAIPending]);
+  }, [
+    messages,
+    openAIClient,
+    openAIPending,
+    setMessages,
+    setOpenAIPending,
+    setStreamedResponse,
+  ]);
 
   const onChange = (event: React.FormEvent<HTMLInputElement>) => {
     setInput(event.currentTarget.value);
@@ -89,14 +96,14 @@ export default function MessageForm() {
     setOpenAIPending(true);
   };
 
-  const apiKey = apiKeys.gemini ?? "";
-  const genAI = new GoogleGenerativeAI(apiKey);
-
-  const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-flash",
-  });
-
   useEffect(() => {
+    const apiKey = apiKeys.gemini ?? "";
+    const genAI = new GoogleGenerativeAI(apiKey);
+
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+    });
+
     const initGeminiChat = () => {
       try {
         const chatSession = model.startChat({
@@ -111,7 +118,7 @@ export default function MessageForm() {
     };
 
     initGeminiChat();
-  }, []);
+  }, [apiKeys.gemini]);
 
   const handleGeminiSubmission = async () => {
     try {
