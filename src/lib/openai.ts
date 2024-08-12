@@ -72,7 +72,6 @@ export const chatStream = async ({
     });
 
     for await (const chunk of stream) {
-      console.log(chunk.choices[0]?.delta?.content || "");
       onStream(chunk);
     }
   } catch (error) {
