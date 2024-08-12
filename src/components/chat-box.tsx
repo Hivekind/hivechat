@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useRef, useEffect } from "react";
 import { messageState } from "@/atoms/messages";
 import { useRecoilValue } from "recoil";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,8 +13,17 @@ export default function ChatBox() {
   const messages: MessageData[] = useRecoilValue(messageState);
   const streamedResponse = useRecoilValue(streamedResponseState);
 
+  const outerRef = useRef<any>(undefined);
+
+  useEffect(() => {
+    const el = outerRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight;
+  }, [messages, streamedResponse]);
+
   return (
     <main
+      ref={outerRef}
       style={{
         flex: 1,
         overflowY: "scroll",
