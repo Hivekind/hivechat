@@ -3,11 +3,13 @@
 import { messageState } from "@/atoms/messages";
 import { useRecoilValue } from "recoil";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { MessageData, MessageType } from "@/types";
+import { MessageData, MessageType, AIModel } from "@/types";
 import ReactMarkdown from "react-markdown";
+import { streamedResponseState } from "@/atoms/streamed-response";
 
 export default function ChatBox() {
   const messages: MessageData[] = useRecoilValue(messageState);
+  const streamedResponse = useRecoilValue(streamedResponseState);
 
   return (
     <main
@@ -39,6 +41,15 @@ export default function ChatBox() {
           );
         }
       })}
+
+      {/* Render the ongoing streaming response for OpenAI */}
+      {streamedResponse && (
+        <RecvBubble
+          name={AIModel.OpenAI}
+          message={streamedResponse}
+          streaming={true}
+        />
+      )}
     </main>
   );
 }
@@ -48,6 +59,7 @@ export function MessageBubble({
   timestamp = new Date(),
   message,
   type,
+  streaming = false,
 }: MessageData) {
   const className =
     type === MessageType.Send
@@ -66,14 +78,25 @@ export function MessageBubble({
             <AvatarFallback>AI</AvatarFallback>
           </Avatar>
 
-          <div className={`max-w-4xl prose ${type === MessageType.Send ? "text-primary-foreground" : ""}`}>
+          <div
+            className={`max-w-4xl prose ${
+              type === MessageType.Send ? "text-primary-foreground" : ""
+            }`}
+          >
             <ReactMarkdown>{message}</ReactMarkdown>
-            <p
-              suppressHydrationWarning
-              className={`text-xs text-end ${type === MessageType.Recv ? "text-slate-500" : "text-slate-400"}`}
-            >
-              {timestamp.toString()}
-            </p>
+
+            {!streaming && (
+              <p
+                suppressHydrationWarning
+                className={`text-xs text-end ${
+                  type === MessageType.Recv
+                    ? "text-slate-500"
+                    : "text-slate-400"
+                }`}
+              >
+                {timestamp.toString()}
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -85,8 +108,15 @@ export function RecvBubble({
   name,
   timestamp,
   message,
+  streaming = false,
 }: Omit<MessageData, "type">) {
-  return MessageBubble({ name, timestamp, message, type: MessageType.Recv });
+  return MessageBubble({
+    name,
+    timestamp,
+    message,
+    type: MessageType.Recv,
+    streaming,
+  });
 }
 
 export function SendBubble({

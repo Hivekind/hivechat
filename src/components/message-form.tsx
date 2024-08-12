@@ -1,9 +1,10 @@
 "use client";
 
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useState, useEffect } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { messageState } from "@/atoms/messages";
 import { apiKeysState } from "@/atoms/api-keys";
-import { useState, useEffect } from "react";
+import { streamedResponseState } from "@/atoms/streamed-response";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,7 +18,7 @@ interface ChatSession {
   ) => Promise<{ response: { text: () => string } }>;
 }
 
-import { chatCompletion } from "@/lib/openai";
+import { chatStream } from "@/lib/openai";
 import { AIModel } from "@/types";
 import { userMessage, aiMessage } from "@/lib/utils";
 
@@ -29,6 +30,7 @@ export default function MessageForm() {
   const [error, setError] = useState<string | null>(null);
   const [openAIPending, setOpenAIPending] = useState<boolean>(false);
   const [openAIClient, setOpenAIClient] = useState<OpenAI | null>(null);
+  const setStreamedResponse = useSetRecoilState(streamedResponseState);
 
   useEffect(() => {
     const client = new OpenAI({
@@ -42,25 +44,34 @@ export default function MessageForm() {
   useEffect(() => {
     if (!openAIPending) return;
 
-    const submitToOpenAI = async () => {
+    const streamOpenAI = async () => {
       try {
-        const response =
-          (await chatCompletion({
-            messagesData: messages,
-            client: openAIClient,
-          })) || "OpenAI response error";
+        let finalResponse = "";
+
+        await chatStream({
+          messagesData: messages,
+          client: openAIClient,
+          onStream: (chunk) => {
+            const chunkContent = chunk.choices[0]?.delta?.content || "";
+            finalResponse += chunkContent;
+
+            setStreamedResponse((prev) => prev + chunkContent);
+          },
+        });
 
         setMessages((prevMessages) => [
           ...prevMessages,
-          aiMessage(response, AIModel.OpenAI),
+          aiMessage(finalResponse, AIModel.OpenAI),
         ]);
+
+        setStreamedResponse("");
       } catch (error) {
-        console.error("Error submitting to OpenAI:", error);
+        console.error("Error stream from OpenAI:", error);
       }
     };
 
     setOpenAIPending(false);
-    submitToOpenAI();
+    streamOpenAI();
   }, [messages, openAIPending, setOpenAIPending]);
 
   const onChange = (event: React.FormEvent<HTMLInputElement>) => {
