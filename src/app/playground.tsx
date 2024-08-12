@@ -1,11 +1,11 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
-import { RecoilRoot, useRecoilValue } from "recoil";
+import { RecoilRoot, useRecoilValue, useRecoilState } from "recoil";
 import MessageForm from "@/components/message-form";
-import ChatBox from "@/components/chat-box";
+import GeminiChatBox from "@/components/gemini-chat-box";
+import OpenAIChatBox from "@/components/openAI-chat-box";
 import ApiKeyDialog from "@/components/api-key-dialog";
-import { MessageData } from "@/types";
 import { window1State, window2State } from "@/atoms/messages";
 import {
   selectedModel1State,
@@ -13,6 +13,12 @@ import {
 } from "@/atoms/selected-model";
 import { getModel } from "@/data/models";
 import type { Model } from "@/data/models";
+
+import {
+  streamedResponse1State,
+  streamedResponse2State,
+} from "@/atoms/streamed-response";
+import { openAIApiKeyState, geminiApiKeyState } from "@/atoms/api-keys";
 
 export default function Playground() {
   return (
@@ -23,10 +29,18 @@ export default function Playground() {
 }
 
 function MainApp() {
-  const window1Messages: MessageData[] = useRecoilValue(window1State);
-  const window2Messages: MessageData[] = useRecoilValue(window2State);
+  const [window1Messages, setWindow1Messages] = useRecoilState(window1State);
+  const [window2Messages, setWindow2Messages] = useRecoilState(window2State);
+
   const selectedModel1 = useRecoilValue(selectedModel1State);
   const selectedModel2 = useRecoilValue(selectedModel2State);
+
+  const [streamedResponse1, setStreamedResponse1] = useRecoilState(
+    streamedResponse1State
+  );
+  const [streamedResponse2, setStreamedResponse2] = useRecoilState(
+    streamedResponse2State
+  );
 
   const models: Model[] = [
     getModel(selectedModel1),
@@ -34,6 +48,12 @@ function MainApp() {
   ].filter((model) => model !== undefined) as Model[];
 
   const messages = [window1Messages, window2Messages];
+  const setMessages = [setWindow1Messages, setWindow2Messages];
+  const streamedResponses = [streamedResponse1, streamedResponse2];
+  const setStreamedResponses = [setStreamedResponse1, setStreamedResponse2];
+
+  const openAIApiKey = useRecoilValue(openAIApiKeyState);
+  const geminiApiKey = useRecoilValue(geminiApiKeyState);
 
   return (
     <>
@@ -48,13 +68,29 @@ function MainApp() {
         <div className="p-8">
           <div className="flex h-full flex-col space-y-4">
             <div className="flex flex-row">
-              {models.map((model, index) => (
-                <ChatBox
-                  key={model.id}
-                  messages={messages[index]}
-                  model={model}
-                />
-              ))}
+              {models.map((model, index) =>
+                model.type === "OpenAI" ? (
+                  <OpenAIChatBox
+                    key={model.id}
+                    messages={messages[index]}
+                    setMessages={setMessages[index]}
+                    streamedResponse={streamedResponses[index]}
+                    setStreamedResponse={setStreamedResponses[index]}
+                    model={model}
+                    apiKey={openAIApiKey}
+                  />
+                ) : (
+                  <GeminiChatBox
+                    key={model.id}
+                    messages={messages[index]}
+                    setMessages={setMessages[index]}
+                    streamedResponse={streamedResponses[index]}
+                    setStreamedResponse={setStreamedResponses[index]}
+                    model={model}
+                    apiKey={geminiApiKey}
+                  />
+                )
+              )}
             </div>
             <MessageForm />
           </div>

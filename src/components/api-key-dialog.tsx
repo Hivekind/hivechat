@@ -13,22 +13,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { useRecoilState } from "recoil";
-import { apiKeysState } from "@/atoms/api-keys";
-import { useState } from "react";
+import { openAIApiKeyState, geminiApiKeyState } from "@/atoms/api-keys";
 
 export default function ApiKeyDialog() {
-  const [apiKeys, setApiKeys] = useRecoilState(apiKeysState);
-  const [openai, setOpenai] = useState(apiKeys.openai);
-  const [anthropic, setAnthropic] = useState(apiKeys.anthropic);
-  const [gemini, setGemini] = useState(apiKeys.gemini);
+  const [openAIApiKey, setOpenAIApiKey] = useRecoilState(openAIApiKeyState);
+  const [geminiApiKey, setGeminiApiKey] = useRecoilState(geminiApiKeyState);
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    setApiKeys({
-      openai,
-      anthropic,
-      gemini,
-    });
   };
 
   return (
@@ -56,20 +48,8 @@ export default function ApiKeyDialog() {
                 id="openai"
                 placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
                 className="col-span-3"
-                value={openai}
-                onChange={(e) => setOpenai(e.target.value)}
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="anthropic" className="text-right">
-                Anthropic
-              </Label>
-              <Input
-                id="anthropic"
-                placeholder="sk-ant-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                className="col-span-3"
-                value={anthropic}
-                onChange={(e) => setAnthropic(e.target.value)}
+                value={openAIApiKey}
+                onChange={(e) => setOpenAIApiKey(e.target.value)}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -80,8 +60,8 @@ export default function ApiKeyDialog() {
                 id="gemini"
                 placeholder="AIxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
                 className="col-span-3"
-                value={gemini}
-                onChange={(e) => setGemini(e.target.value)}
+                value={geminiApiKey}
+                onChange={(e) => setGeminiApiKey(e.target.value)}
               />
             </div>
           </div>

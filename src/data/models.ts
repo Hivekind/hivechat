@@ -1,4 +1,4 @@
-export const types = ["GPT-3", "Gemini"] as const;
+export const types = ["OpenAI", "Gemini"] as const;
 
 export type ModelType = (typeof types)[number];
 
@@ -16,7 +16,7 @@ export const models: Model[] = [
     name: "gpt-4o-mini",
     description:
       "Most capable GPT-3 model. Can do any task the other models can do, often with higher quality, longer output and better instruction-following. Also supports inserting completions within text.",
-    type: "GPT-3",
+    type: "OpenAI",
     strengths:
       "I am an AI language model designed to provide information, answer questions, and assist with various tasks through natural language understanding. My strengths include quick information retrieval, creative content generation, multilingual support, and problem-solving capabilities.",
   },
