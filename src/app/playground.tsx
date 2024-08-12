@@ -281,7 +281,10 @@ function MainApp() {
                 <div className="md:order-1">
                   <TabsContent value="complete" className="mt-0 border-0 p-0">
                     <div className="flex h-full flex-col space-y-4">
-                      <ChatBox messages={messages} />
+                      <div className="flex flex-row">
+                        <ChatBox messages={messages} />
+                        <ChatBox messages={messages} />
+                      </div>
                       <MessageForm />
                     </div>
                   </TabsContent>
