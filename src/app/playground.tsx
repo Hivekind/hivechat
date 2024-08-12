@@ -25,7 +25,7 @@ import { TemperatureSelector } from "@/components/temperature-selector";
 import { TopPSelector } from "@/components/top-p-selector";
 import { models, types } from "@/data/models";
 import { presets } from "@/data/presets";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot, useRecoilValue } from "recoil";
 import MessageForm from "@/components/message-form";
 import ChatBox from "@/components/chat-box";
 import {
@@ -36,10 +36,21 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import ApiKeyDialog from "@/components/api-key-dialog";
+import { MessageData } from "@/types";
+import { messageState } from "@/atoms/messages";
 
 export default function Playground() {
   return (
     <RecoilRoot>
+      <MainApp />
+    </RecoilRoot>
+  );
+}
+
+function MainApp() {
+  const messages: MessageData[] = useRecoilValue(messageState);
+  return (
+    <>
       <div className="md:hidden">
         <Image
           src="https://ui.shadcn.com/examples/playground-light.png"
@@ -270,7 +281,7 @@ export default function Playground() {
                 <div className="md:order-1">
                   <TabsContent value="complete" className="mt-0 border-0 p-0">
                     <div className="flex h-full flex-col space-y-4">
-                      <ChatBox />
+                      <ChatBox messages={messages} />
                       <MessageForm />
                     </div>
                   </TabsContent>
@@ -329,7 +340,7 @@ export default function Playground() {
           </Tabs>
         </div>
       </div>
-    </RecoilRoot>
+    </>
   );
 }
 

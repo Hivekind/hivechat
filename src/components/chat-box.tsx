@@ -1,15 +1,12 @@
 "use client";
 
-import { messageState } from "@/atoms/messages";
 import { useRecoilValue } from "recoil";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MessageData, MessageType, AIModel } from "@/types";
-import ReactMarkdown from "react-markdown";
 import { streamedResponseState } from "@/atoms/streamed-response";
 import { uuid } from "@/lib/utils";
+import { RecvBubble, SendBubble } from "@/components/message-bubble";
 
-export default function ChatBox() {
-  const messages: MessageData[] = useRecoilValue(messageState);
+export default function ChatBox({ messages }: { messages: MessageData[] }) {
   const streamedResponse = useRecoilValue(streamedResponseState);
 
   return (
@@ -21,12 +18,12 @@ export default function ChatBox() {
         maxHeight: "80vh",
       }}
     >
-      {messages.map((message, index) => {
+      {messages.map((message) => {
         if (message.type === MessageType.Send) {
           return (
             <SendBubble
               id={message.id}
-              key={index}
+              key={message.id}
               name={message.name}
               timestamp={message.timestamp}
               message={message.message}
@@ -36,7 +33,7 @@ export default function ChatBox() {
           return (
             <RecvBubble
               id={message.id}
-              key={index}
+              key={message.id}
               name={message.name}
               timestamp={message.timestamp}
               message={message.message}
@@ -56,86 +53,4 @@ export default function ChatBox() {
       )}
     </main>
   );
-}
-
-export function MessageBubble({
-  name,
-  timestamp = new Date(),
-  message,
-  type,
-  streaming = false,
-}: MessageData) {
-  const className =
-    type === MessageType.Send
-      ? "ml-auto bg-primary text-primary-foreground"
-      : "bg-muted";
-  return (
-    <div className="mt-4">
-      <div
-        className={`flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm ${className}`}
-      >
-        <div className="flex items-center space-x-4">
-          {type === MessageType.Recv && <p className="font-semibold">{name}</p>}
-
-          <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>AI</AvatarFallback>
-          </Avatar>
-
-          <div
-            className={`max-w-4xl prose ${
-              type === MessageType.Send ? "text-primary-foreground" : ""
-            }`}
-          >
-            <ReactMarkdown>{message}</ReactMarkdown>
-
-            {!streaming && (
-              <p
-                suppressHydrationWarning
-                className={`text-xs text-end ${
-                  type === MessageType.Recv
-                    ? "text-slate-500"
-                    : "text-slate-400"
-                }`}
-              >
-                {timestamp.toString()}
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export function RecvBubble({
-  id,
-  name,
-  timestamp,
-  message,
-  streaming = false,
-}: Omit<MessageData, "type">) {
-  return MessageBubble({
-    id,
-    name,
-    timestamp,
-    message,
-    type: MessageType.Recv,
-    streaming,
-  });
-}
-
-export function SendBubble({
-  id,
-  name,
-  timestamp,
-  message,
-}: Omit<MessageData, "type">) {
-  return MessageBubble({
-    id,
-    name,
-    timestamp,
-    message,
-    type: MessageType.Send,
-  });
 }
