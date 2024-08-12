@@ -1,14 +1,12 @@
 "use client";
 
-import { messageState } from "@/atoms/messages";
 import { useRecoilValue } from "recoil";
 import { MessageData, MessageType, AIModel } from "@/types";
 import { streamedResponseState } from "@/atoms/streamed-response";
 import { uuid } from "@/lib/utils";
 import { RecvBubble, SendBubble } from "@/components/message-bubble";
 
-export default function ChatBox() {
-  const messages: MessageData[] = useRecoilValue(messageState);
+export default function ChatBox({ messages }: { messages: MessageData[] }) {
   const streamedResponse = useRecoilValue(streamedResponseState);
 
   return (
