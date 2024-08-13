@@ -7,9 +7,9 @@ export const window1State = atom<MessageData[]>({
     {
       id: "11ef-585e-b5737eb0-9943-27d32153fb28",
       type: MessageType.Recv,
-      name: "OpenAI",
+      name: "AI",
       timestamp: new Date(),
-      message: "Hello! from GPT-4o-mini",
+      message: "Hello! from AI",
     },
   ],
 });
@@ -20,9 +20,9 @@ export const window2State = atom<MessageData[]>({
     {
       id: "11ef-585e-b5737eb0-9943-27d32153fb27",
       type: MessageType.Recv,
-      name: "Gemini",
+      name: "AI",
       timestamp: new Date(),
-      message: "Hello! from Gemini",
+      message: "Hello! from AI",
     },
   ],
 });
