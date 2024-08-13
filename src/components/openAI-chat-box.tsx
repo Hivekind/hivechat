@@ -9,6 +9,7 @@ import OpenAI from "openai";
 
 import { chatStream } from "@/lib/openai";
 import { aiMessage } from "@/lib/utils";
+import { ModelSelector } from "./model-selector";
 
 type OpenAIChatBoxProps = {
   messages: MessageData[];
@@ -85,6 +86,7 @@ export default function OpenAIChatBox({
       }}
       className="border border-slate-200 rounded-lg p-4 h-[80vh]"
     >
+      <ModelSelector />
       {messages.map((message) => {
         if (message.type === MessageType.Send) {
           return (

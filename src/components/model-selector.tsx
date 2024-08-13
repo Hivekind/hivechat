@@ -27,33 +27,15 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { Model, ModelType } from "@/data/models";
+import { Model, models, types } from "@/data/models";
 
-interface ModelSelectorProps extends PopoverProps {
-  types: readonly ModelType[];
-  models: Model[];
-}
-
-export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
+export function ModelSelector({ ...props }) {
   const [open, setOpen] = React.useState(false);
   const [selectedModel, setSelectedModel] = React.useState<Model>(models[0]);
   const [peekedModel, setPeekedModel] = React.useState<Model>(models[0]);
 
   return (
-    <div className="grid gap-2">
-      <HoverCard openDelay={200}>
-        <HoverCardTrigger asChild>
-          <Label htmlFor="model">Model</Label>
-        </HoverCardTrigger>
-        <HoverCardContent
-          align="start"
-          className="w-[260px] text-sm"
-          side="left"
-        >
-          The model which will generate the completion. Some models are suitable
-          for natural language tasks, others specialize in code. Learn more.
-        </HoverCardContent>
-      </HoverCard>
+    <div className="flex gap-2 items-center w-4/5">
       <Popover open={open} onOpenChange={setOpen} {...props}>
         <PopoverTrigger asChild>
           <Button
@@ -120,6 +102,19 @@ export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
           </HoverCard>
         </PopoverContent>
       </Popover>
+      <HoverCard openDelay={200}>
+        <HoverCardTrigger asChild>
+          <Label htmlFor="model">?</Label>
+        </HoverCardTrigger>
+        <HoverCardContent
+          align="start"
+          className="w-[260px] text-sm"
+          side="right"
+        >
+          The model which will generate the completion. Some models are suitable
+          for natural language tasks, others specialize in code. Learn more.
+        </HoverCardContent>
+      </HoverCard>
     </div>
   );
 }

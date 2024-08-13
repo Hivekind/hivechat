@@ -6,6 +6,7 @@ import { RecvBubble, SendBubble } from "@/components/message-bubble";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { safetySettings, generationConfig } from "@/data/gemini-settings";
 import { aiMessage } from "@/lib/utils";
+import { ModelSelector } from "./model-selector";
 
 interface ChatSession {
   sendMessage: (
@@ -91,6 +92,7 @@ export default function GeminiChatBox({
       }}
       className="border border-slate-200 rounded-lg p-4 h-[80vh]"
     >
+      <ModelSelector />
       {messages.map((message) => {
         if (message.type === MessageType.Send) {
           return (
