@@ -3,6 +3,18 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import StatefulButton, { ButtonStates } from "./stateful-button";
 
+export type ApiKeyInputProps = {
+  name: string;
+  placeholder: string;
+  url: string;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  value: string;
+  setValue: (value: string) => void;
+  buttonState: ButtonStates;
+  setButtonState: (state: ButtonStates) => void;
+  isValid: boolean;
+};
+
 export function ApiKeyInput({
   name,
   placeholder,
@@ -13,7 +25,7 @@ export function ApiKeyInput({
   buttonState,
   setButtonState,
   isValid,
-}) {
+}: ApiKeyInputProps) {
   return (
     <form onSubmit={onSubmit}>
       <Label htmlFor={name} className="text-right">
