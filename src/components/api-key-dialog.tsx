@@ -14,6 +14,8 @@ import { Label } from "@/components/ui/label";
 
 import { useRecoilState } from "recoil";
 import { openAIApiKeyState, geminiApiKeyState } from "@/atoms/api-keys";
+import Image from "next/image";
+import SettingsLogo from "../../public/images/settings.svg";
 
 export default function ApiKeyDialog() {
   const [openAIApiKey, setOpenAIApiKey] = useRecoilState(openAIApiKeyState);
@@ -26,9 +28,10 @@ export default function ApiKeyDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm" className="w-full">
-          Add Keys
-        </Button>
+        <div className="flex gap-2">
+          <Image src={SettingsLogo} alt="Hivekind" width={16} height={16} />
+          <p>API Keys</p>
+        </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

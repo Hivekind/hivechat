@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { MessageData, MessageType, AIModel } from "@/types";
 import { RecvBubble, SendBubble } from "@/components/message-bubble";
-import { Model } from "@/data/models";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { safetySettings, generationConfig } from "@/data/gemini-settings";
 import { aiMessage } from "@/lib/utils";
@@ -19,18 +18,12 @@ type GeminiChatBoxProps = {
   setMessages: (
     messages: MessageData[] | ((prevMessages: MessageData[]) => MessageData[])
   ) => void;
-  streamedResponse: string;
-  setStreamedResponse: (response: string | ((prev: string) => string)) => void;
-  model: Model;
   apiKey: string;
 };
 
 export default function GeminiChatBox({
   messages,
   setMessages,
-  streamedResponse,
-  setStreamedResponse,
-  model,
   apiKey,
 }: GeminiChatBoxProps) {
   const [chat, setChat] = useState<ChatSession | null>(null);
@@ -96,6 +89,7 @@ export default function GeminiChatBox({
         padding: "10px",
         maxHeight: "80vh",
       }}
+      className="border border-slate-200 rounded-lg p-4 h-[80vh]"
     >
       {messages.map((message) => {
         if (message.type === MessageType.Send) {
