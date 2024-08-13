@@ -28,7 +28,7 @@ export default function MessageForm() {
   return (
     <div>
       <form onSubmit={onSubmit}>
-        <div className="flex w-full items-center space-x-2">
+        <div className="flex w-3/5 items-center gap-2 mx-auto">
           <Input
             type="text"
             placeholder="Enter your prompt..."

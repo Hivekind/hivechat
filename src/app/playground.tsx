@@ -13,12 +13,17 @@ import {
 } from "@/atoms/selected-model";
 import { getModel } from "@/data/models";
 import type { Model } from "@/data/models";
+import HivekindLogo from "../../public/images/hivekind.svg";
 
 import {
   streamedResponse1State,
   streamedResponse2State,
 } from "@/atoms/streamed-response";
 import { openAIApiKeyState, geminiApiKeyState } from "@/atoms/api-keys";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import TentLogo from "../../public/images/tent.svg";
+import GithubLogo from "../../public/images/github.svg";
 
 export default function Playground() {
   return (
@@ -59,15 +64,32 @@ function MainApp() {
     <>
       <div className="hidden h-full flex-col md:flex">
         <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
-          <h2 className="text-lg font-semibold">Playground</h2>
-          <div className="ml-auto flex w-full space-x-2 sm:justify-end">
+          <div className="flex gap-5">
+            <h2 className="text-xl font-semibold border-r border-slate-200 pr-5">
+              Chat
+            </h2>
+            <Image src={HivekindLogo} alt="Hivekind" width={100} height={100} />
+          </div>
+          <div className="ml-auto flex w-full space-x-2 sm:justify-end items-center text-sm gap-2">
+            <Button className="">New Session</Button>
             <ApiKeysCta />
+            <div className="flex gap-2">
+              <Image
+                src={TentLogo}
+                alt="Visit Hivekind.com"
+                width={16}
+                height={16}
+              />
+              <p>Visit Hivekind.com</p>
+            </div>
+            <div className="pl-4">
+              <Image src={GithubLogo} alt="Github" width={16} height={16} />
+            </div>
           </div>
         </div>
-        <Separator />
-        <div className="p-8">
+        <div className="p-8 pt-2">
           <div className="flex h-full flex-col space-y-4">
-            <div className="flex flex-row">
+            <div className="flex flex-row gap-4">
               {models.map((model, index) =>
                 model.type === "OpenAI" ? (
                   <OpenAIChatBox
@@ -84,9 +106,6 @@ function MainApp() {
                     key={model.id}
                     messages={messages[index]}
                     setMessages={setMessages[index]}
-                    streamedResponse={streamedResponses[index]}
-                    setStreamedResponse={setStreamedResponses[index]}
-                    model={model}
                     apiKey={geminiApiKey}
                   />
                 )
