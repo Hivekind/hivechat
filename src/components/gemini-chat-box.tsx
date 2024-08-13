@@ -42,7 +42,7 @@ export default function GeminiChatBox({
 
     const genAI = new GoogleGenerativeAI(apiKey);
     const aiModel = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
+      model: model.name,
     });
 
     const initGeminiChat = () => {
@@ -76,7 +76,7 @@ export default function GeminiChatBox({
           const response = await chat.sendMessage(lastMsg.message);
           const botMessage = aiMessage(
             response.response.text(),
-            AIModel.Gemini
+            model.name
           );
           setMessages((prevMessages) => [...prevMessages, { ...botMessage }]);
         }

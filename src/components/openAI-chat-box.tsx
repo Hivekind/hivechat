@@ -53,6 +53,7 @@ export default function OpenAIChatBox({
         await chatStream({
           messagesData: messages,
           client: openAIClient,
+          model: model.name,
           onStream: (chunk) => {
             const chunkContent = chunk.choices[0]?.delta?.content || "";
             finalResponse += chunkContent;
@@ -63,7 +64,7 @@ export default function OpenAIChatBox({
 
         setMessages((prevMessages) => [
           ...prevMessages,
-          aiMessage(finalResponse, AIModel.OpenAI),
+          aiMessage(finalResponse, model.name),
         ]);
 
         setStreamedResponse("");

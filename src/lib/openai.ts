@@ -22,6 +22,7 @@ const toOpenAIMessages = (messagesData: MessageData[]) => {
 type chatCompletionProps = {
   messagesData: MessageData[];
   client: OpenAI | null;
+  model: string;
 };
 
 export const chatCompletion = async ({
@@ -50,6 +51,7 @@ export const chatCompletion = async ({
 export const chatStream = async ({
   messagesData,
   client,
+  model,
   onStream,
 }: chatCompletionProps & { onStream: (chunk: any) => void }) => {
   if (!client) {
@@ -60,8 +62,8 @@ export const chatStream = async ({
 
   try {
     const stream = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: messages,
+      model,
+      messages,
       stream: true,
     });
 
