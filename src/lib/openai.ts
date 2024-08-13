@@ -7,20 +7,14 @@ const openai = new OpenAI({
 });
 
 const toOpenAIMessages = (messagesData: MessageData[]) => {
-  const messages: OpenAI.ChatCompletionMessageParam[] = messagesData
-    .filter((messageData) => {
-      // Discard messages as response from other AI models
-      return !(
-        messageData.type === MessageType.Recv &&
-        messageData.name !== AIModel.OpenAI
-      );
-    })
-    .map((messageData) => {
+  const messages: OpenAI.ChatCompletionMessageParam[] = messagesData.map(
+    (messageData) => {
       return {
         role: messageData.type === MessageType.Send ? "user" : "assistant",
         content: messageData.message,
       };
-    });
+    }
+  );
 
   return messages;
 };
