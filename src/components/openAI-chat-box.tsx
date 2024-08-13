@@ -1,15 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MessageData, MessageType, AIModel } from "@/types";
+import { MessageData, MessageType } from "@/types";
 import { uuid } from "@/lib/utils";
 import { RecvBubble, SendBubble } from "@/components/message-bubble";
-import { Model } from "@/data/models";
 import OpenAI from "openai";
 
 import { chatStream } from "@/lib/openai";
 import { aiMessage } from "@/lib/utils";
-import { ModelSelector } from "./model-selector";
 
 type OpenAIChatBoxProps = {
   messages: MessageData[];
@@ -18,7 +16,7 @@ type OpenAIChatBoxProps = {
   ) => void;
   streamedResponse: string;
   setStreamedResponse: (response: string | ((prev: string) => string)) => void;
-  model: Model;
+  modelName: string;
   apiKey: string;
 };
 
@@ -27,7 +25,7 @@ export default function OpenAIChatBox({
   setMessages,
   streamedResponse,
   setStreamedResponse,
-  model,
+  modelName,
   apiKey,
 }: OpenAIChatBoxProps) {
   const [openAIClient, setOpenAIClient] = useState<OpenAI | null>(null);
@@ -54,6 +52,7 @@ export default function OpenAIChatBox({
         await chatStream({
           messagesData: messages,
           client: openAIClient,
+          model: modelName,
           onStream: (chunk) => {
             const chunkContent = chunk.choices[0]?.delta?.content || "";
             finalResponse += chunkContent;
@@ -64,7 +63,7 @@ export default function OpenAIChatBox({
 
         setMessages((prevMessages) => [
           ...prevMessages,
-          aiMessage(finalResponse, AIModel.OpenAI),
+          aiMessage(finalResponse, modelName),
         ]);
 
         setStreamedResponse("");
@@ -77,16 +76,7 @@ export default function OpenAIChatBox({
   }, [messages, openAIClient, setMessages, setStreamedResponse]);
 
   return (
-    <main
-      style={{
-        flex: 1,
-        overflowY: "scroll",
-        padding: "10px",
-        maxHeight: "80vh",
-      }}
-      className="border border-slate-200 rounded-lg p-4 h-[80vh]"
-    >
-      <ModelSelector />
+    <div>
       {messages.map((message) => {
         if (message.type === MessageType.Send) {
           return (
@@ -115,11 +105,11 @@ export default function OpenAIChatBox({
       {streamedResponse && (
         <RecvBubble
           id={uuid()}
-          name={model.name}
+          name={modelName}
           message={streamedResponse}
           streaming={true}
         />
       )}
-    </main>
+    </div>
   );
 }

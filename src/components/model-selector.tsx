@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-import { PopoverProps } from "@radix-ui/react-popover";
 
 import { cn } from "@/lib/utils";
 import { useMutationObserver } from "@/hooks/use-mutation-observer";
@@ -31,7 +30,7 @@ import { Model, models, types } from "@/data/models";
 
 export function ModelSelector({ ...props }) {
   const [open, setOpen] = React.useState(false);
-  const [selectedModel, setSelectedModel] = React.useState<Model>(models[0]);
+  const { selectedModel, setSelectedModel } = props;
   const [peekedModel, setPeekedModel] = React.useState<Model>(models[0]);
 
   return (
@@ -45,7 +44,7 @@ export function ModelSelector({ ...props }) {
             aria-label="Select a model"
             className="w-full justify-between"
           >
-            {selectedModel ? selectedModel.name : "Select a model..."}
+            {selectedModel ? selectedModel : "Select a model..."}
             <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -87,10 +86,10 @@ export function ModelSelector({ ...props }) {
                         <ModelItem
                           key={model.id}
                           model={model}
-                          isSelected={selectedModel?.id === model.id}
+                          isSelected={selectedModel === model.name}
                           onPeek={(model) => setPeekedModel(model)}
                           onSelect={() => {
-                            setSelectedModel(model);
+                            setSelectedModel(model.name);
                             setOpen(false);
                           }}
                         />

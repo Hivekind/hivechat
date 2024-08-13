@@ -1,12 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MessageData, MessageType, AIModel } from "@/types";
+import { MessageData, MessageType } from "@/types";
 import { RecvBubble, SendBubble } from "@/components/message-bubble";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { safetySettings, generationConfig } from "@/data/gemini-settings";
 import { aiMessage } from "@/lib/utils";
-import { ModelSelector } from "./model-selector";
 
 interface ChatSession {
   sendMessage: (
@@ -19,12 +18,14 @@ type GeminiChatBoxProps = {
   setMessages: (
     messages: MessageData[] | ((prevMessages: MessageData[]) => MessageData[])
   ) => void;
+  modelName: string;
   apiKey: string;
 };
 
 export default function GeminiChatBox({
   messages,
   setMessages,
+  modelName,
   apiKey,
 }: GeminiChatBoxProps) {
   const [chat, setChat] = useState<ChatSession | null>(null);
@@ -36,7 +37,7 @@ export default function GeminiChatBox({
 
     const genAI = new GoogleGenerativeAI(apiKey);
     const aiModel = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
+      model: modelName,
     });
 
     const initGeminiChat = () => {
@@ -70,7 +71,7 @@ export default function GeminiChatBox({
           const response = await chat.sendMessage(lastMsg.message);
           const botMessage = aiMessage(
             response.response.text(),
-            AIModel.Gemini
+            modelName
           );
           setMessages((prevMessages) => [...prevMessages, { ...botMessage }]);
         }
@@ -83,16 +84,7 @@ export default function GeminiChatBox({
   }, [messages, chat, setMessages, setError]);
 
   return (
-    <main
-      style={{
-        flex: 1,
-        overflowY: "scroll",
-        padding: "10px",
-        maxHeight: "80vh",
-      }}
-      className="border border-slate-200 rounded-lg p-4 h-[80vh]"
-    >
-      <ModelSelector />
+    <div>
       {messages.map((message) => {
         if (message.type === MessageType.Send) {
           return (
@@ -118,6 +110,6 @@ export default function GeminiChatBox({
       })}
 
       {error && <div>{error}</div>}
-    </main>
+    </div>
   );
 }

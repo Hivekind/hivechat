@@ -1,10 +1,11 @@
 "use client";
 
-import { Separator } from "@/components/ui/separator";
-import { RecoilRoot, useRecoilValue, useRecoilState } from "recoil";
+import { useEffect } from "react";
+import { RecoilRoot, useRecoilValue, useRecoilState, useResetRecoilState } from "recoil";
 import MessageForm from "@/components/message-form";
 import GeminiChatBox from "@/components/gemini-chat-box";
 import OpenAIChatBox from "@/components/openAI-chat-box";
+import { OuterChatBox } from "@/components/outer-chat-box";
 import ApiKeyDialog from "@/components/api-key-dialog";
 import { window1State, window2State } from "@/atoms/messages";
 import {
@@ -12,7 +13,6 @@ import {
   selectedModel2State,
 } from "@/atoms/selected-model";
 import { getModel } from "@/data/models";
-import type { Model } from "@/data/models";
 import HivekindLogo from "../../public/images/hivekind.svg";
 
 import {
@@ -37,8 +37,11 @@ function MainApp() {
   const [window1Messages, setWindow1Messages] = useRecoilState(window1State);
   const [window2Messages, setWindow2Messages] = useRecoilState(window2State);
 
-  const selectedModel1 = useRecoilValue(selectedModel1State);
-  const selectedModel2 = useRecoilValue(selectedModel2State);
+  const resetWindow1Messages = useResetRecoilState(window1State);
+  const resetWindow2Messages = useResetRecoilState(window2State);
+
+  const [selectedModel1, setSelectedModel1] = useRecoilState(selectedModel1State);
+  const [selectedModel2, setSelectedModel2] = useRecoilState(selectedModel2State);
 
   const [streamedResponse1, setStreamedResponse1] = useRecoilState(
     streamedResponse1State
@@ -47,18 +50,23 @@ function MainApp() {
     streamedResponse2State
   );
 
-  const models: Model[] = [
-    getModel(selectedModel1),
-    getModel(selectedModel2),
-  ].filter((model) => model !== undefined) as Model[];
-
   const messages = [window1Messages, window2Messages];
   const setMessages = [setWindow1Messages, setWindow2Messages];
   const streamedResponses = [streamedResponse1, streamedResponse2];
   const setStreamedResponses = [setStreamedResponse1, setStreamedResponse2];
+  const selectedModels = [selectedModel1, selectedModel2];
+  const setSelectedModels = [setSelectedModel1, setSelectedModel2];
 
   const openAIApiKey = useRecoilValue(openAIApiKeyState);
   const geminiApiKey = useRecoilValue(geminiApiKeyState);
+
+  useEffect(() => {
+    resetWindow1Messages();
+  }, [selectedModel1, resetWindow1Messages]);
+
+  useEffect(() => {
+    resetWindow2Messages();
+  }, [selectedModel2, resetWindow2Messages]);
 
   return (
     <>
@@ -90,26 +98,42 @@ function MainApp() {
         <div className="p-8 pt-2">
           <div className="flex h-full flex-col space-y-4">
             <div className="flex flex-row gap-4">
-              {models.map((model, index) =>
-                model.type === "OpenAI" ? (
-                  <OpenAIChatBox
-                    key={model.id}
-                    messages={messages[index]}
-                    setMessages={setMessages[index]}
-                    streamedResponse={streamedResponses[index]}
-                    setStreamedResponse={setStreamedResponses[index]}
-                    model={model}
-                    apiKey={openAIApiKey}
-                  />
-                ) : (
-                  <GeminiChatBox
-                    key={model.id}
-                    messages={messages[index]}
-                    setMessages={setMessages[index]}
-                    apiKey={geminiApiKey}
-                  />
-                )
-              )}
+              {selectedModels.map((model, index) => {
+                const modelObj = getModel(model);
+
+                if (!modelObj) {
+                  // Handle the case where the model is not found
+                  return <div key={index}>Model not found</div>;
+                }
+
+                return (
+                  <OuterChatBox
+                    key={index}
+                    selectedModel={model}
+                    setSelectedModel={setSelectedModels[index]}
+                  >
+                    {modelObj.type === "OpenAI" ? (
+                      <OpenAIChatBox
+                        key={index}
+                        messages={messages[index]}
+                        setMessages={setMessages[index]}
+                        streamedResponse={streamedResponses[index]}
+                        setStreamedResponse={setStreamedResponses[index]}
+                        modelName={model}
+                        apiKey={openAIApiKey}
+                      />
+                    ) : (
+                      <GeminiChatBox
+                        key={index}
+                        messages={messages[index]}
+                        setMessages={setMessages[index]}
+                        modelName={model}
+                        apiKey={geminiApiKey}
+                      />
+                    )}
+                  </OuterChatBox>
+                );
+              })}
             </div>
             <MessageForm />
           </div>
