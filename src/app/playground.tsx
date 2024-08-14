@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
-import { RecoilRoot, useRecoilValue, useRecoilState, useResetRecoilState } from "recoil";
+import {
+  RecoilRoot,
+  useRecoilValue,
+  useRecoilState,
+  useResetRecoilState,
+} from "recoil";
 import MessageForm from "@/components/message-form";
 import GeminiChatBox from "@/components/gemini-chat-box";
 import OpenAIChatBox from "@/components/openAI-chat-box";
@@ -40,8 +45,10 @@ function MainApp() {
   const resetWindow1Messages = useResetRecoilState(window1State);
   const resetWindow2Messages = useResetRecoilState(window2State);
 
-  const [selectedModel1, setSelectedModel1] = useRecoilState(selectedModel1State);
-  const [selectedModel2, setSelectedModel2] = useRecoilState(selectedModel2State);
+  const [selectedModel1, setSelectedModel1] =
+    useRecoilState(selectedModel1State);
+  const [selectedModel2, setSelectedModel2] =
+    useRecoilState(selectedModel2State);
 
   const [streamedResponse1, setStreamedResponse1] = useRecoilState(
     streamedResponse1State
