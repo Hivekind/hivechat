@@ -88,11 +88,11 @@ export default function GeminiChatBox({
             if (!firstTokenTime) {
               firstTokenTime = performance.now() - startTime;
             }
-            tokensCount += chunk.usageMetadata.candidatesTokenCount;
+            tokensCount = chunk.usageMetadata.candidatesTokenCount;
             setStreamedResponse((prev) => prev + chunkContent);
           }
 
-          const metrics: Metrics | null = calculateAndSetMetrics(
+          const metrics: Metrics | null = formattedCalculatedMetrics(
             startTime,
             tokensCount,
             firstTokenTime
@@ -113,7 +113,7 @@ export default function GeminiChatBox({
     handleGeminiSubmission();
   }, [messages, chat, setMessages, setError]);
 
-  const calculateAndSetMetrics = (
+  const formattedCalculatedMetrics = (
     startTime: number,
     tokensCount: number,
     firstTokenTime: number | null

@@ -50,6 +50,9 @@ export default function OpenAIChatBox({
     const streamOpenAI = async () => {
       try {
         let finalResponse = "";
+        const startTime = performance.now();
+        let firstTokenTime: number | null = null;
+        let tokensCount = 0;
 
         await chatStream({
           messagesData: messages,
@@ -58,18 +61,20 @@ export default function OpenAIChatBox({
           onStream: (chunk) => {
             const chunkContent = chunk.choices[0]?.delta?.content || "";
             finalResponse += chunkContent;
-
+            if (!firstTokenTime) {
+              firstTokenTime = performance.now() - startTime;
+            }
+            if (chunk.usage && chunk.usage.completion_tokens) {
+              tokensCount = chunk.usage.completion_tokens;
+            }
             setStreamedResponse((prev) => prev + chunkContent);
           },
         });
-
-        const metrics = {
-          timeTaken: 45,
-          tokensUsed: 32,
-          tokensPerSec: 10,
-          apiCreditsUsed: 0.32,
-          firstTokenTime: 32 * cost,
-        };
+        const metrics: Metrics | null = formattedCalculatedMetrics(
+          startTime,
+          tokensCount,
+          firstTokenTime
+        );
 
         setMessages((prevMessages) => [
           ...prevMessages,
@@ -84,6 +89,22 @@ export default function OpenAIChatBox({
 
     streamOpenAI();
   }, [messages, openAIClient, setMessages, setStreamedResponse]);
+
+  const formattedCalculatedMetrics = (
+    startTime: number,
+    tokensCount: number,
+    firstTokenTime: number | null
+  ) => {
+    const endTime = performance.now();
+    const totalTimeTaken = endTime - startTime;
+    return {
+      timeTaken: totalTimeTaken / 1000,
+      tokensUsed: tokensCount,
+      tokensPerSec: tokensCount / (totalTimeTaken / 1000),
+      apiCreditsUsed: tokensCount * cost,
+      firstTokenTime: firstTokenTime,
+    };
+  };
 
   return (
     <div>
