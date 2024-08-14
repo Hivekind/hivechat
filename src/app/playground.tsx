@@ -69,11 +69,13 @@ function MainApp() {
 
   useEffect(() => {
     resetWindow1Messages();
-  }, [selectedModel1, resetWindow1Messages]);
-
-  useEffect(() => {
     resetWindow2Messages();
-  }, [selectedModel2, resetWindow2Messages]);
+  }, [
+    selectedModel1,
+    selectedModel2,
+    resetWindow1Messages,
+    resetWindow2Messages,
+  ]);
 
   return (
     <>
