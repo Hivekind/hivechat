@@ -12,6 +12,7 @@ export function MessageBubble({
   message,
   type,
   streaming = false,
+  metrics,
 }: MessageData) {
   const className =
     type === MessageType.Send
@@ -39,7 +40,7 @@ export function MessageBubble({
           </div>
           <div className={`max-w-4xl rounded-lg px-3 py-2 ${className}`}>
             <ReactMarkdown>{message}</ReactMarkdown>
-            {!streaming && type === MessageType.Recv && (
+            {!streaming && metrics && type === MessageType.Recv && (
               <div>
                 <Separator
                   orientation="horizontal"
@@ -47,28 +48,28 @@ export function MessageBubble({
                 />
                 <div className="text-xs flex gap-4">
                   <p>
-                    <b>43</b> tokens
+                    <b>{metrics.tokensUsed}</b> tokens
                   </p>
                   <Separator
                     orientation="vertical"
                     className="border-r border-slate-300"
                   />
                   <p>
-                    <b>10</b> s
+                    <b>{metrics.timeTaken.toFixed(2)}</b> s
                   </p>
                   <Separator
                     orientation="vertical"
                     className="border-r border-slate-300"
                   />
                   <p>
-                    <b>4.5</b> tokens/s
+                    <b>{metrics.tokensPerSec.toFixed(2)}</b> tokens/s
                   </p>
                   <Separator
                     orientation="vertical"
                     className="border-r border-slate-300"
                   />
                   <p>
-                    <b>$</b> 0.005
+                    <b>$</b> {metrics.apiCreditsUsed.toFixed(4)}
                   </p>
                 </div>
               </div>
@@ -86,6 +87,7 @@ export function RecvBubble({
   timestamp,
   message,
   streaming = false,
+  metrics,
 }: Omit<MessageData, "type">) {
   return MessageBubble({
     id,
@@ -94,6 +96,7 @@ export function RecvBubble({
     message,
     type: MessageType.Recv,
     streaming,
+    metrics,
   });
 }
 

@@ -10,6 +10,13 @@ export const window1State = atom<MessageData[]>({
       name: "AI",
       timestamp: new Date(),
       message: "Hello! from AI",
+      metrics: {
+        timeTaken: 0.0,
+        tokensUsed: 0,
+        tokensPerSec: 0.0,
+        apiCreditsUsed: 0,
+        firstTokenTime: null,
+      },
     },
   ],
 });
@@ -23,6 +30,13 @@ export const window2State = atom<MessageData[]>({
       name: "AI",
       timestamp: new Date(),
       message: "Hello! from AI",
+      metrics: {
+        timeTaken: 0.0,
+        tokensUsed: 0,
+        tokensPerSec: 0.0,
+        apiCreditsUsed: 0,
+        firstTokenTime: null,
+      },
     },
   ],
 });

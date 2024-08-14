@@ -1,13 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MessageData, MessageType } from "@/types";
+import { MessageData, MessageType, Metrics } from "@/types";
 import { uuid } from "@/lib/utils";
 import { RecvBubble, SendBubble } from "@/components/message-bubble";
 import { GoogleGenerativeAI, ChatSession } from "@google/generative-ai";
 import { safetySettings, generationConfig } from "@/data/gemini-settings";
 import { aiMessage } from "@/lib/utils";
-import { time } from "console";
 
 type GeminiChunkResponse = {
   text: () => string;
@@ -37,13 +36,6 @@ export default function GeminiChatBox({
 }: GeminiChatBoxProps) {
   const [chat, setChat] = useState<ChatSession | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [metrics, setMetrics] = useState<{
-    timeTaken: number;
-    tokensUsed: number;
-    tokensPerSec: number;
-    apiCreditsUsed: number;
-    firstTokenTime: number | null;
-  } | null>(null);
 
   useEffect(() => {
     // reset any previous error
@@ -100,11 +92,15 @@ export default function GeminiChatBox({
             setStreamedResponse((prev) => prev + chunkContent);
           }
 
-          calculateAndSetMetrics(startTime, tokensCount, firstTokenTime);
+          const metrics: Metrics | null = calculateAndSetMetrics(
+            startTime,
+            tokensCount,
+            firstTokenTime
+          );
 
           setMessages((prevMessages) => [
             ...prevMessages,
-            aiMessage(finalResponse, modelName),
+            aiMessage(finalResponse, modelName, metrics),
           ]);
 
           setStreamedResponse("");
@@ -124,13 +120,13 @@ export default function GeminiChatBox({
   ) => {
     const endTime = performance.now();
     const totalTimeTaken = endTime - startTime;
-    setMetrics({
+    return {
       timeTaken: totalTimeTaken / 1000,
       tokensUsed: tokensCount,
       tokensPerSec: tokensCount / (totalTimeTaken / 1000),
       apiCreditsUsed: tokensCount * cost,
       firstTokenTime: firstTokenTime,
-    });
+    };
   };
 
   return (
@@ -154,6 +150,7 @@ export default function GeminiChatBox({
               name={message.name}
               timestamp={message.timestamp}
               message={message.message}
+              metrics={message.metrics}
             />
           );
         }

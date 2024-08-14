@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { MessageData, MessageType } from "@/types";
+import { MessageData, MessageType, Metrics } from "@/types";
 import { v1 } from "uuid";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
@@ -18,13 +18,18 @@ export const userMessage = (message: string): MessageData => {
   };
 };
 
-export const aiMessage = (message: string, name: string): MessageData => {
+export const aiMessage = (
+  message: string,
+  name: string,
+  metrics: Metrics | null
+): MessageData => {
   return {
     id: uuid(),
     name,
     message,
     type: MessageType.Recv,
     timestamp: new Date(),
+    metrics: metrics,
   };
 };
 

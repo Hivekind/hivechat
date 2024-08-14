@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MessageData, MessageType } from "@/types";
+import { MessageData, MessageType, Metrics } from "@/types";
 import { uuid } from "@/lib/utils";
 import { RecvBubble, SendBubble } from "@/components/message-bubble";
 import OpenAI from "openai";
@@ -18,6 +18,7 @@ type OpenAIChatBoxProps = {
   setStreamedResponse: (response: string | ((prev: string) => string)) => void;
   modelName: string;
   apiKey: string;
+  cost: number;
 };
 
 export default function OpenAIChatBox({
@@ -27,6 +28,7 @@ export default function OpenAIChatBox({
   setStreamedResponse,
   modelName,
   apiKey,
+  cost,
 }: OpenAIChatBoxProps) {
   const [openAIClient, setOpenAIClient] = useState<OpenAI | null>(null);
 
@@ -61,9 +63,17 @@ export default function OpenAIChatBox({
           },
         });
 
+        const metrics = {
+          timeTaken: 45,
+          tokensUsed: 32,
+          tokensPerSec: 10,
+          apiCreditsUsed: 0.32,
+          firstTokenTime: 32 * cost,
+        };
+
         setMessages((prevMessages) => [
           ...prevMessages,
-          aiMessage(finalResponse, modelName),
+          aiMessage(finalResponse, modelName, metrics),
         ]);
 
         setStreamedResponse("");
@@ -96,6 +106,7 @@ export default function OpenAIChatBox({
               name={message.name}
               timestamp={message.timestamp}
               message={message.message}
+              metrics={message.metrics}
             />
           );
         }
