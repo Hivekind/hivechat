@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,13 +9,13 @@ import {
 
 import { useRecoilState } from "recoil";
 import { openAIApiKeyState, geminiApiKeyState } from "@/atoms/api-keys";
-import Image from "next/image";
-import SettingsLogo from "../../public/images/settings.svg";
 
 import { checkOpenAI, checkGemini, maskApiKey } from "@/lib/utils";
 import { ButtonStates } from "./stateful-button";
 import { useState } from "react";
 import { ApiKeyInput } from "./api-key-input";
+import Image from "next/image";
+import SettingsLogo from "../../public/images/settings.svg";
 
 export default function ApiKeyDialog() {
   const [openAIApiPersistedKey, setOpenAIApiPersistedKey] =
@@ -72,6 +71,7 @@ export default function ApiKeyDialog() {
       setGeminiButtonState(ButtonStates.success);
       setGeminiApiKeyError(false);
       setGeminiApiPersistedKey(geminiApiKey);
+      return;
     }
 
     try {
@@ -92,8 +92,8 @@ export default function ApiKeyDialog() {
       onOpenChange={(isOpen) => {
         // reset the dialog state when the modal is opened
         if (isOpen) {
-          setOpenAIButtonState(ButtonStates.default);
-          setGeminiButtonState(ButtonStates.default);
+          setOpenAIButtonState(ButtonStates.disabled);
+          setGeminiButtonState(ButtonStates.disabled);
 
           // reset input fields if there are any errors
           if (openAIApiKeyError) {
@@ -118,7 +118,7 @@ export default function ApiKeyDialog() {
       }}
     >
       <DialogTrigger asChild>
-        <div className="flex gap-2">
+        <div className="flex gap-2 cursor-pointer">
           <Image src={SettingsLogo} alt="Hivekind" width={16} height={16} />
           <p>API Keys</p>
         </div>
