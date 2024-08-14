@@ -12,7 +12,6 @@ function encrypt(text: string) {
 
 function decrypt(encrypted: string) {
   const [encryptedText, secret, iv] = encrypted.split("g");
-  console.log({ encryptedText }, { secret }, { iv });
   const decipher = crypto.createDecipheriv("aes-256-cbc", secret, iv);
   let decrypted = decipher.update(encryptedText, "hex", "utf8");
   decrypted += decipher.final("utf8");
