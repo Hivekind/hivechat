@@ -2,16 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { MessageData, MessageType } from "@/types";
+import { uuid } from "@/lib/utils";
 import { RecvBubble, SendBubble } from "@/components/message-bubble";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI, ChatSession } from "@google/generative-ai";
 import { safetySettings, generationConfig } from "@/data/gemini-settings";
 import { aiMessage } from "@/lib/utils";
-
-interface ChatSession {
-  sendMessage: (
-    message: string
-  ) => Promise<{ response: { text: () => string } }>;
-}
 
 type GeminiChatBoxProps = {
   messages: MessageData[];
@@ -19,6 +14,8 @@ type GeminiChatBoxProps = {
     messages: MessageData[] | ((prevMessages: MessageData[]) => MessageData[])
   ) => void;
   modelName: string;
+  streamedResponse: string;
+  setStreamedResponse: (response: string | ((prev: string) => string)) => void;
   apiKey: string;
 };
 
@@ -26,6 +23,8 @@ export default function GeminiChatBox({
   messages,
   setMessages,
   modelName,
+  streamedResponse,
+  setStreamedResponse,
   apiKey,
 }: GeminiChatBoxProps) {
   const [chat, setChat] = useState<ChatSession | null>(null);
@@ -67,13 +66,24 @@ export default function GeminiChatBox({
 
     const handleGeminiSubmission = async () => {
       try {
+        let finalResponse = "";
+
         if (chat) {
-          const response = await chat.sendMessage(lastMsg.message);
-          const botMessage = aiMessage(
-            response.response.text(),
-            modelName
-          );
-          setMessages((prevMessages) => [...prevMessages, { ...botMessage }]);
+          let result = await chat.sendMessageStream(lastMsg.message);
+
+          for await (const chunk of result.stream) {
+            const chunkContent = chunk.text();
+            finalResponse += chunkContent;
+
+            setStreamedResponse((prev) => prev + chunkContent);
+          }
+
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            aiMessage(finalResponse, modelName),
+          ]);
+
+          setStreamedResponse("");
         }
       } catch (error) {
         setError("There is an error sending the message");
@@ -108,6 +118,16 @@ export default function GeminiChatBox({
           );
         }
       })}
+
+      {/* Render the ongoing streaming response */}
+      {streamedResponse && (
+        <RecvBubble
+          id={uuid()}
+          name={modelName}
+          message={streamedResponse}
+          streaming={true}
+        />
+      )}
 
       {error && <div>{error}</div>}
     </div>
