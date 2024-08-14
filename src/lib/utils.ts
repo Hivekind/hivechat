@@ -34,32 +34,6 @@ export const uuid = () => {
   return v1().replace(/^(.{8})-(.{4})-(.{4})/, "$3-$2-$1");
 };
 
-export const checkOpenAI = async (bearerToken: string) => {
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    headers: {
-      accept: "*/*",
-      "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
-      authorization: `Bearer ${bearerToken}`,
-      "content-type": "application/json",
-      priority: "u=1, i",
-      "sec-ch-ua":
-        '"Not)A;Brand";v="99", "Google Chrome";v="127", "Chromium";v="127"',
-      "sec-ch-ua-mobile": "?0",
-      "sec-ch-ua-platform": '"Linux"',
-      "sec-fetch-dest": "empty",
-      "sec-fetch-mode": "cors",
-      "sec-fetch-site": "cross-site",
-    },
-    referrerPolicy: "strict-origin-when-cross-origin",
-    body: '{"model":"gpt-3.5-turbo","messages":[{"role":"user","content":"hello"}]}',
-    method: "POST",
-    mode: "cors",
-    credentials: "omit",
-  });
-
-  return response;
-};
-
 export const checkGemini = async (apiKey: string) => {
   const genAI = new GoogleGenerativeAI(apiKey);
   const aiModel = genAI.getGenerativeModel({
