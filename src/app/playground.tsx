@@ -136,6 +136,8 @@ function MainApp() {
                         key={index}
                         messages={messages[index]}
                         setMessages={setMessages[index]}
+                        streamedResponse={streamedResponses[index]}
+                        setStreamedResponse={setStreamedResponses[index]}
                         modelName={model}
                         apiKey={geminiApiKey}
                       />

@@ -101,7 +101,7 @@ export default function OpenAIChatBox({
         }
       })}
 
-      {/* Render the ongoing streaming response for OpenAI */}
+      {/* Render the ongoing streaming response */}
       {streamedResponse && (
         <RecvBubble
           id={uuid()}
