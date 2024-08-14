@@ -7,6 +7,12 @@ import { RecvBubble, SendBubble } from "@/components/message-bubble";
 import { GoogleGenerativeAI, ChatSession } from "@google/generative-ai";
 import { safetySettings, generationConfig } from "@/data/gemini-settings";
 import { aiMessage } from "@/lib/utils";
+import { time } from "console";
+
+type GeminiChunkResponse = {
+  text: () => string;
+  usageMetadata: { candidatesTokenCount: number };
+};
 
 type GeminiChatBoxProps = {
   messages: MessageData[];
@@ -17,6 +23,7 @@ type GeminiChatBoxProps = {
   streamedResponse: string;
   setStreamedResponse: (response: string | ((prev: string) => string)) => void;
   apiKey: string;
+  cost: number;
 };
 
 export default function GeminiChatBox({
@@ -25,10 +32,18 @@ export default function GeminiChatBox({
   modelName,
   streamedResponse,
   setStreamedResponse,
+  cost,
   apiKey,
 }: GeminiChatBoxProps) {
   const [chat, setChat] = useState<ChatSession | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [metrics, setMetrics] = useState<{
+    timeTaken: number;
+    tokensUsed: number;
+    tokensPerSec: number;
+    apiCreditsUsed: number;
+    firstTokenTime: number | null;
+  } | null>(null);
 
   useEffect(() => {
     // reset any previous error
@@ -48,6 +63,7 @@ export default function GeminiChatBox({
         });
         setChat(chatSession);
       } catch (error) {
+        console.log(error);
         setError("There is an error initializing the chat");
       }
     };
@@ -69,14 +85,22 @@ export default function GeminiChatBox({
         let finalResponse = "";
 
         if (chat) {
+          const startTime = performance.now();
+          let firstTokenTime: number | null = null;
+          let tokensCount = 0;
           let result = await chat.sendMessageStream(lastMsg.message);
 
-          for await (const chunk of result.stream) {
+          for await (const chunk of result.stream as AsyncIterable<GeminiChunkResponse>) {
             const chunkContent = chunk.text();
             finalResponse += chunkContent;
-
+            if (!firstTokenTime) {
+              firstTokenTime = performance.now() - startTime;
+            }
+            tokensCount += chunk.usageMetadata.candidatesTokenCount;
             setStreamedResponse((prev) => prev + chunkContent);
           }
+
+          calculateAndSetMetrics(startTime, tokensCount, firstTokenTime);
 
           setMessages((prevMessages) => [
             ...prevMessages,
@@ -92,6 +116,22 @@ export default function GeminiChatBox({
 
     handleGeminiSubmission();
   }, [messages, chat, setMessages, setError]);
+
+  const calculateAndSetMetrics = (
+    startTime: number,
+    tokensCount: number,
+    firstTokenTime: number | null
+  ) => {
+    const endTime = performance.now();
+    const totalTimeTaken = endTime - startTime;
+    setMetrics({
+      timeTaken: totalTimeTaken / 1000,
+      tokensUsed: tokensCount,
+      tokensPerSec: tokensCount / (totalTimeTaken / 1000),
+      apiCreditsUsed: tokensCount * cost,
+      firstTokenTime: firstTokenTime,
+    });
+  };
 
   return (
     <div>
