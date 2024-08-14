@@ -1,4 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import { ModelSelector } from "./model-selector";
+import ModelChangeConfirmationDialog from "@/components/model-change-confirmation-dialog";
 
 type Props = {
   selectedModel: string;
@@ -6,7 +10,25 @@ type Props = {
   children: React.ReactNode;
 };
 
-const OuterChatBox = ({ selectedModel, setSelectedModel, children } : Props) => {
+const OuterChatBox = ({ selectedModel, setSelectedModel, children }: Props) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [pendingModel, setPendingModel] = useState<string | null>(null);
+
+  const handleModelChange = (newModel: string) => {
+    setPendingModel(newModel);
+    setIsDialogOpen(true);
+  };
+
+  const handleConfirm = () => {
+    if (pendingModel) {
+      setSelectedModel(pendingModel);
+    }
+  };
+
+  const handleCancel = () => {
+    setPendingModel(null);
+  };
+
   return (
     <main
       style={{
@@ -19,9 +41,16 @@ const OuterChatBox = ({ selectedModel, setSelectedModel, children } : Props) => 
     >
       <ModelSelector
         selectedModel={selectedModel}
-        setSelectedModel={setSelectedModel}
+        setSelectedModel={handleModelChange}
       />
       {children}
+
+      <ModelChangeConfirmationDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
     </main>
   );
 };
