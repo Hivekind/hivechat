@@ -61,7 +61,7 @@ export default function GeminiChatBox({
     };
 
     initGeminiChat();
-  }, [apiKey]);
+  }, [apiKey, modelName]);
 
   useEffect(() => {
     if (messages.length === 0) return;
@@ -112,7 +112,7 @@ export default function GeminiChatBox({
     };
 
     handleGeminiSubmission();
-  }, [messages, chat, setMessages, setError]);
+  }, [messages, chat, setMessages, setError, setStreamedResponse, modelName]);
 
   return (
     <div>

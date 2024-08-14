@@ -89,7 +89,7 @@ export default function OpenAIChatBox({
     };
 
     streamOpenAI();
-  }, [messages, openAIClient, setMessages, setStreamedResponse]);
+  }, [messages, modelName, openAIClient, setMessages, setStreamedResponse]);
 
   return (
     <div>
