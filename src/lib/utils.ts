@@ -85,3 +85,20 @@ export const maskApiKey = (apiKey: string, leading = 4, trailing = 4) => {
     "x".repeat(8)
   );
 };
+
+export const formattedCalculatedMetrics = (
+  startTime: number,
+  tokensCount: number,
+  firstTokenTime: number | null,
+  cost: number
+) => {
+  const endTime = performance.now();
+  const totalTimeTaken = endTime - startTime;
+  return {
+    timeTaken: totalTimeTaken / 1000,
+    tokensUsed: tokensCount,
+    tokensPerSec: tokensCount / (totalTimeTaken / 1000),
+    apiCreditsUsed: tokensCount * cost,
+    firstTokenTime: firstTokenTime,
+  };
+};

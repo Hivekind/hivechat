@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { MessageData, MessageType, Metrics } from "@/types";
-import { uuid } from "@/lib/utils";
+import { formattedCalculatedMetrics, uuid } from "@/lib/utils";
 import { RecvBubble, SendBubble } from "@/components/message-bubble";
 import { GoogleGenerativeAI, ChatSession } from "@google/generative-ai";
 import { safetySettings, generationConfig } from "@/data/gemini-settings";
@@ -95,7 +95,8 @@ export default function GeminiChatBox({
           const metrics: Metrics | null = formattedCalculatedMetrics(
             startTime,
             tokensCount,
-            firstTokenTime
+            firstTokenTime,
+            cost
           );
 
           setMessages((prevMessages) => [
@@ -112,22 +113,6 @@ export default function GeminiChatBox({
 
     handleGeminiSubmission();
   }, [messages, chat, setMessages, setError]);
-
-  const formattedCalculatedMetrics = (
-    startTime: number,
-    tokensCount: number,
-    firstTokenTime: number | null
-  ) => {
-    const endTime = performance.now();
-    const totalTimeTaken = endTime - startTime;
-    return {
-      timeTaken: totalTimeTaken / 1000,
-      tokensUsed: tokensCount,
-      tokensPerSec: tokensCount / (totalTimeTaken / 1000),
-      apiCreditsUsed: tokensCount * cost,
-      firstTokenTime: firstTokenTime,
-    };
-  };
 
   return (
     <div>
