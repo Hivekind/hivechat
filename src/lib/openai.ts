@@ -65,6 +65,7 @@ export const chatStream = async ({
       model,
       messages,
       stream: true,
+      stream_options: { include_usage: true },
     });
 
     for await (const chunk of stream) {
