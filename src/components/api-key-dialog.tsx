@@ -10,7 +10,8 @@ import {
 import { useRecoilState } from "recoil";
 import { openAIApiKeyState, geminiApiKeyState } from "@/atoms/api-keys";
 
-import { checkOpenAI, checkGemini, maskApiKey } from "@/lib/utils";
+import { checkOpenAIKey } from "@/lib/openai";
+import { checkGemini, maskApiKey } from "@/lib/utils";
 import { ButtonStates } from "./stateful-button";
 import { useState } from "react";
 import { ApiKeyInput } from "./api-key-input";
@@ -49,9 +50,9 @@ export default function ApiKeyDialog() {
       return;
     }
 
-    const response = await checkOpenAI(openAIApiKey);
+    const response = await checkOpenAIKey(openAIApiKey);
 
-    if (response.status != 200) {
+    if (response === false) {
       setOpenAIButtonState(ButtonStates.default);
       setOpenAIApiKeyError(true);
     } else {
