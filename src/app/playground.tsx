@@ -87,11 +87,11 @@ function MainApp() {
     <>
       <div className="hidden h-full flex-col md:flex">
         <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
-          <div className="flex gap-5">
+          <div className="flex gap-5 w-full">
             <Link href="/">
-              <h2 className="text-xl font-semibold border-r border-slate-200 pr-5">
-                Chat
-              </h2>
+              <h1 className="text-xl font-semibold border-r border-slate-200 pr-5">
+                Compare AI Models
+              </h1>
             </Link>
             <a
               target="_blank"
