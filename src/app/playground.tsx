@@ -129,7 +129,7 @@ function MainApp() {
                         streamedResponse={streamedResponses[index]}
                         setStreamedResponse={setStreamedResponses[index]}
                         modelName={model}
-                        cost={modelObj.cost}
+                        outputCost={modelObj.outputCost}
                         apiKey={openAIApiKey}
                       />
                     ) : (
@@ -140,7 +140,7 @@ function MainApp() {
                         streamedResponse={streamedResponses[index]}
                         setStreamedResponse={setStreamedResponses[index]}
                         modelName={model}
-                        cost={modelObj.cost}
+                        outputCost={modelObj.outputCost}
                         apiKey={geminiApiKey}
                       />
                     )}

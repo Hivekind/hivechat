@@ -22,7 +22,7 @@ type GeminiChatBoxProps = {
   streamedResponse: string;
   setStreamedResponse: (response: string | ((prev: string) => string)) => void;
   apiKey: string;
-  cost: number;
+  outputCost: number;
 };
 
 export default function GeminiChatBox({
@@ -31,7 +31,7 @@ export default function GeminiChatBox({
   modelName,
   streamedResponse,
   setStreamedResponse,
-  cost,
+  outputCost,
   apiKey,
 }: GeminiChatBoxProps) {
   const [chat, setChat] = useState<ChatSession | null>(null);
@@ -96,7 +96,7 @@ export default function GeminiChatBox({
             startTime,
             tokensCount,
             firstTokenTime,
-            cost
+            outputCost
           );
 
           setMessages((prevMessages) => [

@@ -18,7 +18,7 @@ type OpenAIChatBoxProps = {
   setStreamedResponse: (response: string | ((prev: string) => string)) => void;
   modelName: string;
   apiKey: string;
-  cost: number;
+  outputCost: number;
 };
 
 export default function OpenAIChatBox({
@@ -28,7 +28,7 @@ export default function OpenAIChatBox({
   setStreamedResponse,
   modelName,
   apiKey,
-  cost,
+  outputCost,
 }: OpenAIChatBoxProps) {
   const [openAIClient, setOpenAIClient] = useState<OpenAI | null>(null);
 
@@ -74,7 +74,7 @@ export default function OpenAIChatBox({
           startTime,
           tokensCount,
           firstTokenTime,
-          cost
+          outputCost
         );
 
         setMessages((prevMessages) => [
