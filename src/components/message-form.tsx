@@ -27,7 +27,7 @@ export default function MessageForm() {
 
   return (
     <div>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} name="message-form">
         <div className="flex w-3/5 items-center gap-2 mx-auto">
           <Input
             type="text"
