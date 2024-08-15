@@ -18,7 +18,7 @@ type OpenAIChatBoxProps = {
   setStreamedResponse: (response: string | ((prev: string) => string)) => void;
   modelName: string;
   apiKey: string;
-  cost: number;
+  outputCost: number;
   streamedResponseRef?: React.RefObject<HTMLDivElement>;
 };
 
@@ -29,7 +29,7 @@ export default function OpenAIChatBox({
   setStreamedResponse,
   modelName,
   apiKey,
-  cost,
+  outputCost,
   streamedResponseRef,
 }: OpenAIChatBoxProps) {
   const [openAIClient, setOpenAIClient] = useState<OpenAI | null>(null);
@@ -76,7 +76,7 @@ export default function OpenAIChatBox({
           startTime,
           tokensCount,
           firstTokenTime,
-          cost
+          outputCost
         );
 
         setMessages((prevMessages) => [
