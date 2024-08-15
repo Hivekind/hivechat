@@ -1,11 +1,36 @@
 import { MessageData, MessageType } from "@/types";
 import { Avatar } from "@/components/ui/avatar";
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown, { ExtraProps } from "react-markdown";
 import UserImage from "../../public/images/user.svg";
 import BotImage from "../../public/images/bot.svg";
 import { Separator } from "@radix-ui/react-separator";
 import Image from "next/image";
 import hljs from "highlight.js";
+import { ClassAttributes, HTMLAttributes } from "react";
+
+type ReactMarkdownComponentProps = ClassAttributes<HTMLElement> &
+  HTMLAttributes<HTMLElement> &
+  ExtraProps;
+
+function highlightedCode(props: ReactMarkdownComponentProps) {
+  const { children, className, node, ...rest } = props;
+  const match = /language-(\w+)/.exec(className || "");
+  const chosenLanguage = match ? match[1] : "plaintext";
+  const detectedLanguage = hljs.getLanguage(chosenLanguage);
+  const language = detectedLanguage?.scope?.toString() ?? "plaintext";
+  const highlighted = hljs.highlight(String(children), {
+    language,
+    ignoreIllegals: true,
+  });
+
+  return (
+    <code
+      {...rest}
+      className={`${className ?? "language-plaintext font-bold"} hljs my-4`}
+      dangerouslySetInnerHTML={{ __html: highlighted.value }}
+    ></code>
+  );
+}
 
 export function MessageBubble({
   name,
@@ -40,36 +65,27 @@ export function MessageBubble({
             </Avatar>
           </div>
           <div className={`w-5/6 rounded-lg px-3 py-2 ${className}`}>
-            <ReactMarkdown
-              components={{
-                p(props) {
-                  return <p {...props} className="my-4" />;
-                },
+            {streaming ? (
+              message
+            ) : (
+              <ReactMarkdown
+                components={{
+                  p(props) {
+                    const { className, node, ...rest } = props;
+                    return (
+                      <p {...rest} className={`my-4 ${className ?? ""}`} />
+                    );
+                  },
 
-                code(props) {
-                  if (streaming) return <code {...props} />;
+                  code(props) {
+                    return highlightedCode(props);
+                  },
+                }}
+              >
+                {message}
+              </ReactMarkdown>
+            )}
 
-                  const { children, className, node, ...rest } = props;
-                  const match = /language-(\w+)/.exec(className || "");
-                  const language = match ? match[1] : "plaintext";
-                  const highlighted = hljs.highlight(String(children), {
-                    language,
-                  });
-
-                  return (
-                    <code
-                      {...rest}
-                      className={`${
-                        className ?? "language-plaintext font-bold"
-                      } hljs my-4`}
-                      dangerouslySetInnerHTML={{ __html: highlighted.value }}
-                    ></code>
-                  );
-                },
-              }}
-            >
-              {message}
-            </ReactMarkdown>
             {!streaming && type === MessageType.Recv && (
               <div>
                 <Separator
