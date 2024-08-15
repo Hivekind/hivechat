@@ -19,7 +19,6 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
@@ -101,19 +100,6 @@ export function ModelSelector({ ...props }) {
           </HoverCard>
         </PopoverContent>
       </Popover>
-      <HoverCard openDelay={200}>
-        <HoverCardTrigger asChild>
-          <Label htmlFor="model">?</Label>
-        </HoverCardTrigger>
-        <HoverCardContent
-          align="start"
-          className="w-[260px] text-sm"
-          side="right"
-        >
-          The model which will generate the completion. Some models are suitable
-          for natural language tasks, others specialize in code. Learn more.
-        </HoverCardContent>
-      </HoverCard>
     </div>
   );
 }
