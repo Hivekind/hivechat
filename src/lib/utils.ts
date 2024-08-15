@@ -64,7 +64,7 @@ export const formattedCalculatedMetrics = (
   startTime: number,
   tokensCount: number,
   firstTokenTime: number | null,
-  cost: number
+  outputCost: number
 ) => {
   const endTime = performance.now();
   const totalTimeTaken = endTime - startTime;
@@ -72,7 +72,7 @@ export const formattedCalculatedMetrics = (
     timeTaken: totalTimeTaken / 1000,
     tokensUsed: tokensCount,
     tokensPerSec: tokensCount / (totalTimeTaken / 1000),
-    apiCreditsUsed: tokensCount * cost,
+    apiCreditsUsed: tokensCount * outputCost,
     firstTokenTime: firstTokenTime,
   };
 };
