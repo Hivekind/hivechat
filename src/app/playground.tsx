@@ -29,6 +29,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import TentLogo from "../../public/images/tent.svg";
 import GithubLogo from "../../public/images/github.svg";
+import Link from "next/link";
 
 export default function Playground() {
   return (
@@ -82,15 +83,34 @@ function MainApp() {
       <div className="hidden h-full flex-col md:flex">
         <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
           <div className="flex gap-5">
-            <h2 className="text-xl font-semibold border-r border-slate-200 pr-5">
-              Chat
-            </h2>
-            <Image src={HivekindLogo} alt="Hivekind" width={100} height={100} />
+            <Link href="/">
+              <h2 className="text-xl font-semibold border-r border-slate-200 pr-5">
+                Chat
+              </h2>
+            </Link>
+            <a
+              target="_blank"
+              href="https://hivekind.com/"
+              rel="noopener noreferrer"
+              className="content-center"
+            >
+              <Image
+                src={HivekindLogo}
+                alt="Hivekind"
+                width={135}
+                height={100}
+              />
+            </a>
           </div>
           <div className="ml-auto flex w-full space-x-2 sm:justify-end items-center text-sm gap-2">
             <Button className="">New Session</Button>
             <ApiKeysCta />
-            <div className="flex gap-2">
+            <a
+              target="_blank"
+              href="https://hivekind.com/"
+              rel="noopener noreferrer"
+              className="flex gap-2"
+            >
               <Image
                 src={TentLogo}
                 alt="Visit Hivekind.com"
@@ -98,10 +118,15 @@ function MainApp() {
                 height={16}
               />
               <p>Visit Hivekind.com</p>
-            </div>
-            <div className="pl-4">
+            </a>
+            <a
+              target="_blank"
+              href="https://github.com/Hivekind"
+              rel="noopener noreferrer"
+              className="pl-4"
+            >
               <Image src={GithubLogo} alt="Github" width={16} height={16} />
-            </div>
+            </a>
           </div>
         </div>
         <div className="p-8 pt-2">
