@@ -107,6 +107,7 @@ export default function GeminiChatBox({
           setStreamedResponse("");
         }
       } catch (error) {
+        console.log("Error stream from Gemini:", error);
         setError("There is an error sending the message");
       }
     };
