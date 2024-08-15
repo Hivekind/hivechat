@@ -68,6 +68,11 @@ function MainApp() {
   const openAIApiKey = useRecoilValue(openAIApiKeyState);
   const geminiApiKey = useRecoilValue(geminiApiKeyState);
 
+  const resetSession = () => {
+    resetWindow1Messages();
+    resetWindow2Messages();
+  };
+
   useEffect(() => {
     resetWindow1Messages();
     resetWindow2Messages();
@@ -103,7 +108,9 @@ function MainApp() {
             </a>
           </div>
           <div className="ml-auto flex w-full space-x-2 sm:justify-end items-center text-sm gap-2">
-            <Button className="">New Session</Button>
+            <Button className="" onClick={resetSession}>
+              New Session
+            </Button>
             <ApiKeysCta />
             <a
               target="_blank"
