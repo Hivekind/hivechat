@@ -9,6 +9,14 @@ export const enum AIModel {
   Gemini = "Gemini",
 }
 
+export type Metrics = {
+  timeTaken: number;
+  tokensUsed: number;
+  tokensPerSec: number;
+  apiCreditsUsed: number;
+  firstTokenTime: number | null;
+};
+
 export type MessageData = {
   id: string;
   name: string;
@@ -16,4 +24,5 @@ export type MessageData = {
   message: string;
   type: MessageType;
   streaming?: boolean;
+  metrics?: Metrics | null;
 };

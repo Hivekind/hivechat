@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MessageData, MessageType } from "@/types";
-import { uuid } from "@/lib/utils";
+import { MessageData, MessageType, Metrics } from "@/types";
+import { formattedCalculatedMetrics, uuid } from "@/lib/utils";
 import { RecvBubble, SendBubble } from "@/components/message-bubble";
 import OpenAI from "openai";
 
@@ -18,6 +18,7 @@ type OpenAIChatBoxProps = {
   setStreamedResponse: (response: string | ((prev: string) => string)) => void;
   modelName: string;
   apiKey: string;
+  cost: number;
 };
 
 export default function OpenAIChatBox({
@@ -27,6 +28,7 @@ export default function OpenAIChatBox({
   setStreamedResponse,
   modelName,
   apiKey,
+  cost,
 }: OpenAIChatBoxProps) {
   const [openAIClient, setOpenAIClient] = useState<OpenAI | null>(null);
 
@@ -48,6 +50,9 @@ export default function OpenAIChatBox({
     const streamOpenAI = async () => {
       try {
         let finalResponse = "";
+        const startTime = performance.now();
+        let firstTokenTime: number | null = null;
+        let tokensCount = 0;
 
         await chatStream({
           messagesData: messages,
@@ -56,14 +61,25 @@ export default function OpenAIChatBox({
           onStream: (chunk) => {
             const chunkContent = chunk.choices[0]?.delta?.content || "";
             finalResponse += chunkContent;
-
+            if (!firstTokenTime) {
+              firstTokenTime = performance.now() - startTime;
+            }
+            if (chunk.usage && chunk.usage.completion_tokens) {
+              tokensCount = chunk.usage.completion_tokens;
+            }
             setStreamedResponse((prev) => prev + chunkContent);
           },
         });
+        const metrics: Metrics | null = formattedCalculatedMetrics(
+          startTime,
+          tokensCount,
+          firstTokenTime,
+          cost
+        );
 
         setMessages((prevMessages) => [
           ...prevMessages,
-          aiMessage(finalResponse, modelName),
+          aiMessage(finalResponse, modelName, metrics),
         ]);
 
         setStreamedResponse("");
@@ -96,6 +112,7 @@ export default function OpenAIChatBox({
               name={message.name}
               timestamp={message.timestamp}
               message={message.message}
+              metrics={message.metrics}
             />
           );
         }

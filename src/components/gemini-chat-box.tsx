@@ -1,12 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MessageData, MessageType } from "@/types";
-import { uuid } from "@/lib/utils";
+import { MessageData, MessageType, Metrics } from "@/types";
+import { formattedCalculatedMetrics, uuid } from "@/lib/utils";
 import { RecvBubble, SendBubble } from "@/components/message-bubble";
 import { GoogleGenerativeAI, ChatSession } from "@google/generative-ai";
 import { safetySettings, generationConfig } from "@/data/gemini-settings";
 import { aiMessage } from "@/lib/utils";
+
+type GeminiChunkResponse = {
+  text: () => string;
+  usageMetadata: { candidatesTokenCount: number };
+};
 
 type GeminiChatBoxProps = {
   messages: MessageData[];
@@ -17,6 +22,7 @@ type GeminiChatBoxProps = {
   streamedResponse: string;
   setStreamedResponse: (response: string | ((prev: string) => string)) => void;
   apiKey: string;
+  cost: number;
 };
 
 export default function GeminiChatBox({
@@ -25,6 +31,7 @@ export default function GeminiChatBox({
   modelName,
   streamedResponse,
   setStreamedResponse,
+  cost,
   apiKey,
 }: GeminiChatBoxProps) {
   const [chat, setChat] = useState<ChatSession | null>(null);
@@ -48,6 +55,7 @@ export default function GeminiChatBox({
         });
         setChat(chatSession);
       } catch (error) {
+        console.log(error);
         setError("There is an error initializing the chat");
       }
     };
@@ -69,18 +77,31 @@ export default function GeminiChatBox({
         let finalResponse = "";
 
         if (chat) {
+          const startTime = performance.now();
+          let firstTokenTime: number | null = null;
+          let tokensCount = 0;
           let result = await chat.sendMessageStream(lastMsg.message);
 
-          for await (const chunk of result.stream) {
+          for await (const chunk of result.stream as AsyncIterable<GeminiChunkResponse>) {
             const chunkContent = chunk.text();
             finalResponse += chunkContent;
-
+            if (!firstTokenTime) {
+              firstTokenTime = performance.now() - startTime;
+            }
+            tokensCount = chunk.usageMetadata.candidatesTokenCount;
             setStreamedResponse((prev) => prev + chunkContent);
           }
 
+          const metrics: Metrics | null = formattedCalculatedMetrics(
+            startTime,
+            tokensCount,
+            firstTokenTime,
+            cost
+          );
+
           setMessages((prevMessages) => [
             ...prevMessages,
-            aiMessage(finalResponse, modelName),
+            aiMessage(finalResponse, modelName, metrics),
           ]);
 
           setStreamedResponse("");
@@ -114,6 +135,7 @@ export default function GeminiChatBox({
               name={message.name}
               timestamp={message.timestamp}
               message={message.message}
+              metrics={message.metrics}
             />
           );
         }
