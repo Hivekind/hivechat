@@ -61,7 +61,7 @@ export default function GeminiChatBox({
     };
 
     initGeminiChat();
-  }, [apiKey]);
+  }, [apiKey, modelName]);
 
   useEffect(() => {
     if (messages.length === 0) return;
@@ -107,12 +107,13 @@ export default function GeminiChatBox({
           setStreamedResponse("");
         }
       } catch (error) {
+        console.log("Error stream from Gemini:", error);
         setError("There is an error sending the message");
       }
     };
 
     handleGeminiSubmission();
-  }, [messages, chat, setMessages, setError]);
+  }, [messages, chat, setMessages, setError, setStreamedResponse, modelName]);
 
   return (
     <div>

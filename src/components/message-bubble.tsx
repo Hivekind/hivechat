@@ -1,14 +1,39 @@
 import { MessageData, MessageType } from "@/types";
 import { Avatar } from "@/components/ui/avatar";
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown, { ExtraProps } from "react-markdown";
 import UserImage from "../../public/images/user.svg";
 import BotImage from "../../public/images/bot.svg";
 import { Separator } from "@radix-ui/react-separator";
 import Image from "next/image";
+import hljs from "highlight.js";
+import { ClassAttributes, HTMLAttributes } from "react";
+import { useMemo } from "react";
+
+type ReactMarkdownComponentProps = ClassAttributes<HTMLElement> &
+  HTMLAttributes<HTMLElement> &
+  ExtraProps;
+
+function highlightedCode(props: ReactMarkdownComponentProps) {
+  const { children, className, node, ...rest } = props;
+  const match = /language-(\w+)/.exec(className || "");
+  const chosenLanguage = match ? match[1] : "plaintext";
+  const detectedLanguage = hljs.getLanguage(chosenLanguage);
+  const language = detectedLanguage?.scope?.toString() ?? "plaintext";
+  const highlighted = hljs.highlight(String(children), {
+    language,
+    ignoreIllegals: true,
+  });
+
+  return (
+    <code
+      {...rest}
+      className={`${className ?? "language-plaintext font-bold"} hljs my-4`}
+      dangerouslySetInnerHTML={{ __html: highlighted.value }}
+    ></code>
+  );
+}
 
 export function MessageBubble({
-  name,
-  timestamp = new Date(),
   message,
   type,
   streaming = false,
@@ -18,10 +43,30 @@ export function MessageBubble({
     type === MessageType.Send
       ? "bg-slate-600 text-white"
       : "bg-slate-200 text-black";
+
+  const highlightedMarkdownText = useMemo(() => {
+    return (
+      <ReactMarkdown
+        components={{
+          p(props) {
+            const { className, node, ...rest } = props;
+            return <p {...rest} className={`my-4 ${className ?? ""}`} />;
+          },
+
+          code(props) {
+            return highlightedCode(props);
+          },
+        }}
+      >
+        {message}
+      </ReactMarkdown>
+    );
+  }, [message]);
+
   return (
     <div className="mt-4">
       <div
-        className={`flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm`}
+        className={`flex w-full flex-col gap-2 rounded-lg px-3 py-2 text-sm`}
       >
         <div className="flex gap-4">
           <div>
@@ -38,9 +83,10 @@ export function MessageBubble({
               />
             </Avatar>
           </div>
-          <div className={`max-w-4xl rounded-lg px-3 py-2 ${className}`}>
-            <ReactMarkdown>{message}</ReactMarkdown>
-            {!streaming && metrics && type === MessageType.Recv && (
+          <div className={`w-5/6 rounded-lg px-3 py-2 ${className}`}>
+            {highlightedMarkdownText}
+
+            {!streaming && type === MessageType.Recv && (
               <div>
                 <Separator
                   orientation="horizontal"
@@ -48,28 +94,28 @@ export function MessageBubble({
                 />
                 <div className="text-xs flex gap-4">
                   <p>
-                    <b>{metrics.tokensUsed}</b> tokens
+                    <b>{metrics?.tokensUsed}</b> tokens
                   </p>
                   <Separator
                     orientation="vertical"
                     className="border-r border-slate-300"
                   />
                   <p>
-                    <b>{metrics.timeTaken.toFixed(2)}</b> s
+                    <b>{metrics?.timeTaken.toFixed(2)}</b> s
                   </p>
                   <Separator
                     orientation="vertical"
                     className="border-r border-slate-300"
                   />
                   <p>
-                    <b>{metrics.tokensPerSec.toFixed(2)}</b> tokens/s
+                    <b>{metrics?.tokensPerSec.toFixed(2)}</b> tokens/s
                   </p>
                   <Separator
                     orientation="vertical"
                     className="border-r border-slate-300"
                   />
                   <p>
-                    <b>$</b> {metrics.apiCreditsUsed.toFixed(4)}
+                    <b>$</b> {metrics?.apiCreditsUsed.toFixed(4)}
                   </p>
                 </div>
               </div>

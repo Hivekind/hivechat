@@ -89,7 +89,7 @@ export default function OpenAIChatBox({
     };
 
     streamOpenAI();
-  }, [messages, openAIClient, setMessages, setStreamedResponse]);
+  }, [messages, modelName, openAIClient, setMessages, setStreamedResponse]);
 
   return (
     <div>
@@ -121,7 +121,6 @@ export default function OpenAIChatBox({
       {/* Render the ongoing streaming response */}
       {streamedResponse && (
         <RecvBubble
-          id={uuid()}
           name={modelName}
           message={streamedResponse}
           streaming={true}
