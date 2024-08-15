@@ -70,7 +70,7 @@ export function MessageBubble({
       ref={bubbleRef ? bubbleRef : null}
     >
       <div
-        className={`flex w-full flex-col gap-2 rounded-lg px-3 py-2 text-sm`}
+        className={`flex w-full flex-col gap-2 rounded-lg px-3 py-2 text-sm prose`}
       >
         <div className="flex gap-4">
           <div>
