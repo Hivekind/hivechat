@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { MessageData, MessageType, Metrics } from "@/types";
-import { formattedCalculatedMetrics, uuid } from "@/lib/utils";
+import { formattedCalculatedMetrics } from "@/lib/utils";
 import { RecvBubble, SendBubble } from "@/components/message-bubble";
 import OpenAI from "openai";
 
@@ -19,6 +19,7 @@ type OpenAIChatBoxProps = {
   modelName: string;
   apiKey: string;
   cost: number;
+  streamedResponseRef?: React.RefObject<HTMLDivElement>;
 };
 
 export default function OpenAIChatBox({
@@ -29,6 +30,7 @@ export default function OpenAIChatBox({
   modelName,
   apiKey,
   cost,
+  streamedResponseRef,
 }: OpenAIChatBoxProps) {
   const [openAIClient, setOpenAIClient] = useState<OpenAI | null>(null);
 
@@ -92,7 +94,7 @@ export default function OpenAIChatBox({
   }, [messages, modelName, openAIClient, setMessages, setStreamedResponse]);
 
   return (
-    <div>
+    <>
       {messages.map((message) => {
         if (message.type === MessageType.Send) {
           return (
@@ -121,11 +123,12 @@ export default function OpenAIChatBox({
       {/* Render the ongoing streaming response */}
       {streamedResponse && (
         <RecvBubble
+          bubbleRef={streamedResponseRef}
           name={modelName}
           message={streamedResponse}
           streaming={true}
         />
       )}
-    </div>
+    </>
   );
 }

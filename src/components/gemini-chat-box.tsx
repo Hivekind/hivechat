@@ -23,6 +23,7 @@ type GeminiChatBoxProps = {
   setStreamedResponse: (response: string | ((prev: string) => string)) => void;
   apiKey: string;
   cost: number;
+  streamedResponseRef?: React.RefObject<HTMLDivElement>;
 };
 
 export default function GeminiChatBox({
@@ -33,6 +34,7 @@ export default function GeminiChatBox({
   setStreamedResponse,
   cost,
   apiKey,
+  streamedResponseRef,
 }: GeminiChatBoxProps) {
   const [chat, setChat] = useState<ChatSession | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -116,7 +118,7 @@ export default function GeminiChatBox({
   }, [messages, chat, setMessages, setError, setStreamedResponse, modelName]);
 
   return (
-    <div>
+    <>
       {messages.map((message) => {
         if (message.type === MessageType.Send) {
           return (
@@ -145,6 +147,7 @@ export default function GeminiChatBox({
       {/* Render the ongoing streaming response */}
       {streamedResponse && (
         <RecvBubble
+          bubbleRef={streamedResponseRef}
           name={modelName}
           message={streamedResponse}
           streaming={true}
@@ -152,6 +155,6 @@ export default function GeminiChatBox({
       )}
 
       {error && <div>{error}</div>}
-    </div>
+    </>
   );
 }
