@@ -18,7 +18,7 @@ export type Metrics = {
 };
 
 export type MessageData = {
-  id: string;
+  id?: string;
   name: string;
   timestamp?: Date;
   message: string;

@@ -121,7 +121,6 @@ export default function OpenAIChatBox({
       {/* Render the ongoing streaming response */}
       {streamedResponse && (
         <RecvBubble
-          id={uuid()}
           name={modelName}
           message={streamedResponse}
           streaming={true}

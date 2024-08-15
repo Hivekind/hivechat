@@ -7,6 +7,7 @@ import { Separator } from "@radix-ui/react-separator";
 import Image from "next/image";
 import hljs from "highlight.js";
 import { ClassAttributes, HTMLAttributes } from "react";
+import { useMemo } from "react";
 
 type ReactMarkdownComponentProps = ClassAttributes<HTMLElement> &
   HTMLAttributes<HTMLElement> &
@@ -33,8 +34,6 @@ function highlightedCode(props: ReactMarkdownComponentProps) {
 }
 
 export function MessageBubble({
-  name,
-  timestamp = new Date(),
   message,
   type,
   streaming = false,
@@ -44,6 +43,26 @@ export function MessageBubble({
     type === MessageType.Send
       ? "bg-slate-600 text-white"
       : "bg-slate-200 text-black";
+
+  const highlightedMarkdownText = useMemo(() => {
+    return (
+      <ReactMarkdown
+        components={{
+          p(props) {
+            const { className, node, ...rest } = props;
+            return <p {...rest} className={`my-4 ${className ?? ""}`} />;
+          },
+
+          code(props) {
+            return highlightedCode(props);
+          },
+        }}
+      >
+        {message}
+      </ReactMarkdown>
+    );
+  }, [message]);
+
   return (
     <div className="mt-4">
       <div
@@ -65,26 +84,7 @@ export function MessageBubble({
             </Avatar>
           </div>
           <div className={`w-5/6 rounded-lg px-3 py-2 ${className}`}>
-            {streaming ? (
-              message
-            ) : (
-              <ReactMarkdown
-                components={{
-                  p(props) {
-                    const { className, node, ...rest } = props;
-                    return (
-                      <p {...rest} className={`my-4 ${className ?? ""}`} />
-                    );
-                  },
-
-                  code(props) {
-                    return highlightedCode(props);
-                  },
-                }}
-              >
-                {message}
-              </ReactMarkdown>
-            )}
+            {highlightedMarkdownText}
 
             {!streaming && type === MessageType.Recv && (
               <div>
