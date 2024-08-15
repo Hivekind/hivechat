@@ -72,7 +72,7 @@ export const formattedCalculatedMetrics = (
     timeTaken: totalTimeTaken / 1000,
     tokensUsed: tokensCount,
     tokensPerSec: tokensCount / (totalTimeTaken / 1000),
-    apiCreditsUsed: tokensCount * outputCost,
+    apiCreditsUsed: tokensCount * (outputCost / 1000), // outputCost is per 1000 tokens
     firstTokenTime: firstTokenTime,
   };
 };
