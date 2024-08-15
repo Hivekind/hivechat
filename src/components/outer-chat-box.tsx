@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { ModelSelector } from "./model-selector";
 import ModelChangeConfirmationDialog from "@/components/model-change-confirmation-dialog";
 
@@ -8,6 +8,10 @@ type Props = {
   selectedModel: string;
   setSelectedModel: (model: string) => void;
   children: React.ReactNode;
+};
+
+type WithStreamedResponseRef = {
+  streamedResponseRef?: React.RefObject<HTMLDivElement>;
 };
 
 const OuterChatBox = ({ selectedModel, setSelectedModel, children }: Props) => {
@@ -28,6 +32,20 @@ const OuterChatBox = ({ selectedModel, setSelectedModel, children }: Props) => {
   const handleCancel = () => {
     setPendingModel(null);
   };
+
+  const outerRef = useRef<HTMLDivElement | null>(null);
+  const streamedResponseRef = useRef<HTMLDivElement | null>(null);
+
+  // Scroll to the top of the streaming response bubble to keep it in view
+  // The same position is replaced by the last message when streaming is done.
+  useEffect(() => {
+    const el = outerRef.current;
+    const streamedResponseEl = streamedResponseRef.current;
+
+    if (el && streamedResponseEl) {
+      el.scrollTop = streamedResponseEl.offsetTop;
+    }
+  }, [children, selectedModel]);
 
   return (
     <main
@@ -52,12 +70,22 @@ const OuterChatBox = ({ selectedModel, setSelectedModel, children }: Props) => {
         />
       </div>
       <div
+        ref={outerRef}           // Auto scrolling: Attach the ref to this scrollable div
         style={{
           flex: 1,
           overflowY: "scroll",
+          position: "relative", // Auto scrolling: the streamed response bubble is positioned relative to this div
         }}
       >
-        {children}
+        {/* Pass the streamedResponseRef to children */}
+        {React.Children.map(children, (child) => {
+          if (React.isValidElement(child)) {
+            return React.cloneElement(child as React.ReactElement<WithStreamedResponseRef>, {
+              streamedResponseRef,
+            });
+          }
+          return child;
+        })}
       </div>
 
       <ModelChangeConfirmationDialog

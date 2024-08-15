@@ -38,7 +38,8 @@ export function MessageBubble({
   type,
   streaming = false,
   metrics,
-}: MessageData) {
+  bubbleRef = null,
+}: MessageData & { bubbleRef?: React.Ref<HTMLDivElement> }) {
   const className =
     type === MessageType.Send
       ? "bg-slate-600 text-white"
@@ -63,8 +64,11 @@ export function MessageBubble({
     );
   }, [message]);
 
+
   return (
-    <div className="mt-4">
+    <div className="mt-4"
+      ref={bubbleRef ? bubbleRef : null}
+    >
       <div
         className={`flex w-full flex-col gap-2 rounded-lg px-3 py-2 text-sm`}
       >
@@ -86,8 +90,12 @@ export function MessageBubble({
           <div className={`w-5/6 rounded-lg px-3 py-2 ${className}`}>
             {highlightedMarkdownText}
 
-            {!streaming && type === MessageType.Recv && (
-              <div>
+            {type === MessageType.Recv && (
+              // Auto scrolling:
+              //    always render this even if streaming, so the message height is the same for both streaming and final message.
+              //    this is important for the auto scrolling to work correctly.
+              // if streaming, this will be hidden
+              <div className={streaming ? "invisible" : "" }>
                 <Separator
                   orientation="horizontal"
                   className="border-t border-slate-300 my-2"
@@ -134,7 +142,8 @@ export function RecvBubble({
   message,
   streaming = false,
   metrics,
-}: Omit<MessageData, "type">) {
+  bubbleRef = null,   // Auto scrolling: this is the ref for the streaming message
+}: Omit<MessageData, "type"> & { bubbleRef?: React.Ref<HTMLDivElement> }) {
   return MessageBubble({
     id,
     name,
@@ -143,6 +152,7 @@ export function RecvBubble({
     type: MessageType.Recv,
     streaming,
     metrics,
+    bubbleRef,
   });
 }
 
