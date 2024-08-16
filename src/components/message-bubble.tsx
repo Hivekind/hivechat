@@ -77,6 +77,7 @@ export function MessageBubble({
                 width={16}
                 height={16}
                 alt="avatar"
+                className="not-prose"
               />
             </Avatar>
           </div>
