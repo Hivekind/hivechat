@@ -8,6 +8,7 @@ import Image from "next/image";
 import hljs from "highlight.js";
 import { ClassAttributes, HTMLAttributes } from "react";
 import { useMemo } from "react";
+import "./message-bubble.scss";
 
 type ReactMarkdownComponentProps = ClassAttributes<HTMLElement> &
   HTMLAttributes<HTMLElement> &
@@ -42,18 +43,13 @@ export function MessageBubble({
 }: MessageData & { bubbleRef?: React.Ref<HTMLDivElement> }) {
   const className =
     type === MessageType.Send
-      ? "bg-slate-600 text-white"
-      : "bg-slate-200 text-black";
+      ? "bg-slate-600 text-white message-send"
+      : "bg-slate-200 text-black message-recv";
 
   const highlightedMarkdownText = useMemo(() => {
     return (
       <ReactMarkdown
         components={{
-          p(props) {
-            const { className, node, ...rest } = props;
-            return <p {...rest} className={`my-4 ${className ?? ""}`} />;
-          },
-
           code(props) {
             return highlightedCode(props);
           },
@@ -64,13 +60,10 @@ export function MessageBubble({
     );
   }, [message]);
 
-
   return (
-    <div className="mt-4"
-      ref={bubbleRef ? bubbleRef : null}
-    >
+    <div className="mt-4 message-bubble" ref={bubbleRef ? bubbleRef : null}>
       <div
-        className={`flex w-full flex-col gap-2 rounded-lg px-3 py-2 text-sm`}
+        className={`flex w-full flex-col gap-2 rounded-lg px-3 py-2 text-sm prose`}
       >
         <div className="flex gap-4">
           <div>
@@ -84,6 +77,7 @@ export function MessageBubble({
                 width={16}
                 height={16}
                 alt="avatar"
+                className="not-prose"
               />
             </Avatar>
           </div>
@@ -95,34 +89,34 @@ export function MessageBubble({
               //    always render this even if streaming, so the message height is the same for both streaming and final message.
               //    this is important for the auto scrolling to work correctly.
               // if streaming, this will be hidden
-              <div className={streaming ? "invisible" : "" }>
+              <div className={streaming ? "invisible" : ""}>
                 <Separator
                   orientation="horizontal"
                   className="border-t border-slate-300 my-2"
                 />
                 <div className="text-xs flex gap-4">
-                  <p>
+                  <p className="not-prose">
                     <b>{metrics?.tokensUsed}</b> tokens
                   </p>
                   <Separator
                     orientation="vertical"
                     className="border-r border-slate-300"
                   />
-                  <p>
+                  <p className="not-prose">
                     <b>{metrics?.timeTaken.toFixed(2)}</b> s
                   </p>
                   <Separator
                     orientation="vertical"
                     className="border-r border-slate-300"
                   />
-                  <p>
+                  <p className="not-prose">
                     <b>{metrics?.tokensPerSec.toFixed(2)}</b> tokens/s
                   </p>
                   <Separator
                     orientation="vertical"
                     className="border-r border-slate-300"
                   />
-                  <p>
+                  <p className="not-prose">
                     <b>$</b> {metrics?.apiCreditsUsed.toFixed(4)}
                   </p>
                 </div>
@@ -142,7 +136,7 @@ export function RecvBubble({
   message,
   streaming = false,
   metrics,
-  bubbleRef = null,   // Auto scrolling: this is the ref for the streaming message
+  bubbleRef = null, // Auto scrolling: this is the ref for the streaming message
 }: Omit<MessageData, "type"> & { bubbleRef?: React.Ref<HTMLDivElement> }) {
   return MessageBubble({
     id,
