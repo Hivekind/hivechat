@@ -16,21 +16,23 @@ const toOpenAIMessages = (messagesData: MessageData[]) => {
 
 type chatCompletionProps = {
   messagesData: MessageData[];
-  client: OpenAI | null;
   model: string;
+  apiKey: string;
 };
 
 export const chatStream = async ({
   messagesData,
-  client,
   model,
+  apiKey,
   onStream,
 }: chatCompletionProps & { onStream: (chunk: any) => void }) => {
-  if (!client) {
-    throw new Error("OpenAI client not initialized");
-  }
 
   const messages = toOpenAIMessages(messagesData);
+
+  const client = new OpenAI({
+    apiKey,
+    dangerouslyAllowBrowser: true,
+  });
 
   try {
     const stream = await client.chat.completions.create({

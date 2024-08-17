@@ -115,7 +115,15 @@ export default function GeminiChatBox({
     };
 
     handleGeminiSubmission();
-  }, [messages, chat, setMessages, setError, setStreamedResponse, modelName]);
+  }, [
+    messages,
+    chat,
+    setMessages,
+    setError,
+    setStreamedResponse,
+    modelName,
+    outputCost,
+  ]);
 
   return (
     <>
