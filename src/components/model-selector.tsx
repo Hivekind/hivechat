@@ -33,7 +33,7 @@ export function ModelSelector({ ...props }) {
   const [peekedModel, setPeekedModel] = React.useState<Model>(models[0]);
 
   return (
-    <div className="flex gap-2 items-center w-4/5">
+    <div className="flex gap-2 items-center w-4/5 shadow-lg">
       <Popover open={open} onOpenChange={setOpen} {...props}>
         <PopoverTrigger asChild>
           <Button
