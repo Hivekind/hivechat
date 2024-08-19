@@ -6,13 +6,27 @@ import { window1State, window2State } from "@/atoms/messages";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { userMessage } from "@/lib/utils";
+import StatefulButton, { ButtonStates } from "./stateful-button";
 
 export default function MessageForm() {
   const [input, setInput] = useState("");
+  const [sendState, setSendState] = useState(ButtonStates.disabled);
   const setWindow1Messages = useSetRecoilState(window1State);
   const setWindow2Messages = useSetRecoilState(window2State);
 
   const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+    if (
+      sendState === ButtonStates.disabled &&
+      event.currentTarget.value !== ""
+    ) {
+      setSendState(ButtonStates.default);
+    } else if (
+      sendState !== ButtonStates.disabled &&
+      event.currentTarget.value === ""
+    ) {
+      setSendState(ButtonStates.disabled);
+    }
+
     setInput(event.currentTarget.value);
   };
 
@@ -36,9 +50,9 @@ export default function MessageForm() {
             onChange={onChange}
             className="grow"
           />
-          <Button type="submit" className="flex-none">
+          <StatefulButton type="submit" className="flex-none" state={sendState}>
             Send
-          </Button>
+          </StatefulButton>
         </div>
       </form>
     </div>
