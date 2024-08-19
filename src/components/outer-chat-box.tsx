@@ -115,20 +115,62 @@ const OuterChatBox = ({
     [isAutoScrollEnabled]
   );
 
-  // when the last received message is shorter than the viewport, scroll to the bottom
-  useEffect(() => {
-    if (messages.length > 0 && messages[messages.length - 1].type === "recv") {
-      const outer = outerRef.current;
-      if (outer) {
-        const lastEl = outer.lastElementChild as HTMLElement;
+  const inViewport = (el: HTMLElement, outer: HTMLElement) => {
+    // top and bottom within viewport
+    if (
+      el.offsetTop > outer.scrollTop &&
+      el.offsetTop + el.clientHeight <= outer.scrollTop + outer.clientHeight
+    ) {
+      return true;
+    }
 
-        if (
-          lastEl.offsetTop > outer.scrollTop &&
-          lastEl.offsetTop < outer.scrollTop + outer.clientHeight &&
-          lastEl.clientHeight < outer.clientHeight
-        ) {
-          outer.scrollTop = outer.scrollHeight;
-        }
+    return false;
+  };
+
+  const canFitInViewport = (el: HTMLElement, outer: HTMLElement) => {
+    // height smaller than viewport
+    if (el.clientHeight <= outer.clientHeight) {
+      return true;
+    }
+    return false;
+  };
+
+  const validMessagesPair = (messages: MessageData[]) => {
+    const msgLength = messages.length;
+
+    if (msgLength < 2) {
+      return false;
+    }
+
+    const lastSent = messages[msgLength - 2];
+    const lastRecv = messages[msgLength - 1];
+
+    if (lastSent.type === "send" && lastRecv.type === "recv") {
+      return true;
+    }
+
+    return false;
+  };
+
+  // scroll to the bottom when both conditions are met:
+  //    1. the last sent message is within the viewport
+  //    2. the last received message is shorter than the viewport
+  useEffect(() => {
+    const outer = outerRef.current;
+
+    if (outer && validMessagesPair(messages)) {
+      const recv = outer.lastElementChild as HTMLElement;
+      const sent = outer.children[outer.children.length - 2] as HTMLElement;
+
+      if (
+        recv &&
+        sent &&
+        // the last sent message is within the viewport
+        inViewport(sent, outer) &&
+        // the last received message is shorter than the viewport
+        canFitInViewport(recv, outer)
+      ) {
+        outer.scrollTop = outer.scrollHeight;
       }
     }
   }, [messages]);

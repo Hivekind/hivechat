@@ -44,7 +44,7 @@ export default function OpenAIChatBox({
       try {
         let finalResponse = "";
 
-        const chunkBatchSize = 5;
+        const chunkBatchSize = 50;
         let accumulatedChunks: string[] = [];
 
         const startTime = performance.now();
