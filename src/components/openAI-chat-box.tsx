@@ -1,21 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { MessageData, MessageType, Metrics } from "@/types";
 import { formattedCalculatedMetrics } from "@/lib/utils";
 import { RecvBubble, SendBubble } from "@/components/message-bubble";
-import OpenAI from "openai";
 
 import { chatStream } from "@/lib/openai";
 import { aiMessage } from "@/lib/utils";
 
 type OpenAIChatBoxProps = {
   messages: MessageData[];
+
   setMessages: (
     messages: MessageData[] | ((prevMessages: MessageData[]) => MessageData[])
   ) => void;
+
   streamedResponse: string;
   setStreamedResponse: (response: string | ((prev: string) => string)) => void;
+
   modelName: string;
   apiKey: string;
   outputCost: number;
@@ -32,17 +34,6 @@ export default function OpenAIChatBox({
   outputCost,
   streamedResponseRef,
 }: OpenAIChatBoxProps) {
-  const [openAIClient, setOpenAIClient] = useState<OpenAI | null>(null);
-
-  useEffect(() => {
-    const client = new OpenAI({
-      apiKey,
-      dangerouslyAllowBrowser: true,
-    });
-
-    setOpenAIClient(client);
-  }, [apiKey]);
-
   useEffect(() => {
     if (messages.length === 0) return;
 
@@ -52,26 +43,37 @@ export default function OpenAIChatBox({
     const streamOpenAI = async () => {
       try {
         let finalResponse = "";
+
+        const chunkBatchSize = 50;
+        let accumulatedChunks: string[] = [];
+
         const startTime = performance.now();
         let firstTokenTime: number | null = null;
         let tokensCount = 0;
 
         await chatStream({
           messagesData: messages,
-          client: openAIClient,
           model: modelName,
+          apiKey,
           onStream: (chunk) => {
             const chunkContent = chunk.choices[0]?.delta?.content || "";
             finalResponse += chunkContent;
+
+            accumulatedChunks.push(chunkContent);
+            if (accumulatedChunks.length >= chunkBatchSize) {
+              setStreamedResponse((prev) => prev + accumulatedChunks.join(""));
+              accumulatedChunks = [];
+            }
+
             if (!firstTokenTime) {
               firstTokenTime = performance.now() - startTime;
             }
             if (chunk.usage && chunk.usage.completion_tokens) {
               tokensCount = chunk.usage.completion_tokens;
             }
-            setStreamedResponse((prev) => prev + chunkContent);
           },
         });
+
         const metrics: Metrics | null = formattedCalculatedMetrics(
           startTime,
           tokensCount,
@@ -91,7 +93,14 @@ export default function OpenAIChatBox({
     };
 
     streamOpenAI();
-  }, [messages, modelName, openAIClient, setMessages, setStreamedResponse]);
+  }, [
+    messages,
+    modelName,
+    setMessages,
+    setStreamedResponse,
+    outputCost,
+    apiKey,
+  ]);
 
   return (
     <>

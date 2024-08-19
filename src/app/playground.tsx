@@ -8,8 +8,6 @@ import {
   useResetRecoilState,
 } from "recoil";
 import MessageForm from "@/components/message-form";
-import GeminiChatBox from "@/components/gemini-chat-box";
-import OpenAIChatBox from "@/components/openAI-chat-box";
 import { OuterChatBox } from "@/components/outer-chat-box";
 import ApiKeyDialog from "@/components/api-key-dialog";
 import { window1State, window2State } from "@/atoms/messages";
@@ -17,7 +15,6 @@ import {
   selectedModel1State,
   selectedModel2State,
 } from "@/atoms/selected-model";
-import { getModel } from "@/data/models";
 import HivekindLogo from "../../public/images/hivekind.svg";
 
 import {
@@ -140,43 +137,18 @@ function MainApp() {
           <div className="flex h-full flex-col space-y-4">
             <div className="flex flex-row gap-4">
               {selectedModels.map((model, index) => {
-                const modelObj = getModel(model);
-
-                if (!modelObj) {
-                  // Handle the case where the model is not found
-                  return <div key={index}>Model not found</div>;
-                }
-
                 return (
                   <OuterChatBox
                     key={index}
                     selectedModel={model}
                     setSelectedModel={setSelectedModels[index]}
-                  >
-                    {modelObj.type === "OpenAI" ? (
-                      <OpenAIChatBox
-                        key={index}
-                        messages={messages[index]}
-                        setMessages={setMessages[index]}
-                        streamedResponse={streamedResponses[index]}
-                        setStreamedResponse={setStreamedResponses[index]}
-                        modelName={model}
-                        outputCost={modelObj.outputCost}
-                        apiKey={openAIApiKey}
-                      />
-                    ) : (
-                      <GeminiChatBox
-                        key={index}
-                        messages={messages[index]}
-                        setMessages={setMessages[index]}
-                        streamedResponse={streamedResponses[index]}
-                        setStreamedResponse={setStreamedResponses[index]}
-                        modelName={model}
-                        outputCost={modelObj.outputCost}
-                        apiKey={geminiApiKey}
-                      />
-                    )}
-                  </OuterChatBox>
+                    messages={messages[index]}
+                    setMessages={setMessages[index]}
+                    streamedResponse={streamedResponses[index]}
+                    setStreamedResponse={setStreamedResponses[index]}
+                    openAIApiKey={openAIApiKey}
+                    geminiApiKey={geminiApiKey}
+                  ></OuterChatBox>
                 );
               })}
             </div>
