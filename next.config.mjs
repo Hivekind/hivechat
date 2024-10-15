@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/hivechat",
+  basePath: "/labs//hivechat",
   output: "export",
   images: {
     unoptimized: true,
