@@ -1,4 +1,9 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# HiveChat
+
+## Project Description
+HiveChat is a fully client-side chat application built with Next.js, allowing users to compare the output of different AI models (OpenAI and Gemini) side by side. Users can bring their own API keys to access the models, select different models for each chat box, and compare the responses concurrently.
+
+![HiveChat UI](./docs/hivechat-ui.png)
 
 ## Getting Started
 
@@ -6,85 +11,30 @@ First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+You can access the app by opening [http://localhost:3000/hivechat](http://localhost:3000/hivechat) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Prerequisites
+To use this app, you will need:
 
-## Learn More
+- An API key from OpenAI
+- An API key from Gemini
 
-To learn more about Next.js, take a look at the following resources:
+Once you have the keys, you can enter them into the `API Keys` settings in the app to start chatting.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## How to Use
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Select a model for each chat box (OpenAI or Gemini).
+- Enter a message and get responses from the models.
+- Compare the responses side by side.
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Initial command to create this project
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-## Command to create this project
+This project was initially created using the following command:
 
 ```bash
-shuwnyuan@Tees-MacBook-Pro:~$ npx create-next-app@latest
-Need to install the following packages:
-create-next-app@14.2.5
-Ok to proceed? (y) y
-✔ What is your project named? … hivechat
-✔ Would you like to use TypeScript? … No / Yes
-✔ Would you like to use ESLint? … No / Yes
-✔ Would you like to use Tailwind CSS? … No / Yes
-✔ Would you like to use `src/` directory? … No / Yes
-✔ Would you like to use App Router? (recommended) … No / Yes
-✔ Would you like to customize the default import alias (@/*)? … No / Yes
-Creating a new Next.js app in /Users/shuwnyuan/hivechat.
-
-Using npm.
-
-Initializing project with template: app-tw
-
-
-Installing dependencies:
-- react
-- react-dom
-- next
-
-Installing devDependencies:
-- typescript
-- @types/node
-- @types/react
-- @types/react-dom
-- postcss
-- tailwindcss
-- eslint
-- eslint-config-next
-
-npm WARN deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
-npm WARN deprecated @humanwhocodes/config-array@0.11.14: Use @eslint/config-array instead
-npm WARN deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
-npm WARN deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
-npm WARN deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
-
-added 360 packages, and audited 361 packages in 33s
-
-136 packages are looking for funding
-  run `npm fund` for details
-
-found 0 vulnerabilities
-Initialized a git repository.
-
-Success! Created hivechat at /Users/shuwnyuan/hivechat
+npx create-next-app@latest
 ```
-
